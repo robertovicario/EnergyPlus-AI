@@ -1,0 +1,247 @@
+<!-- Jinja :: Template -->
+{% extends 'base-2.html' %}
+
+<!-- Jinja :: Theme -->
+{% set theme_title = 'Analytics' %}
+
+<!-- Jinja :: Macros -->
+{% from 'components/breadcrumb.html' import breadcrumb %}
+{% from 'includes/analytics/widget.html' import widget %}
+{% from 'includes/analytics/table.html' import table %}
+
+<!-- Jinja :: Content -->
+{% block content %}
+<div class="flex-lg-fill overflow-x-auto vstack vh-100">
+    <div class="flex-fill overflow-y-lg-auto mt-lg-2 scrollbar bg-body rounded-top-start border-top-lg border-start-lg shadow-lg-2" data-x-inject="page">
+
+        <!-- Jinja :: Breadcrumb -->
+        {% set breadcrumb_items = [
+            {
+                'label': config.system.name,
+                'url': request.url_for('templates:root')
+            },
+            {
+                'label': 'Analytics',
+                'url': '#'
+            }
+        ] %}
+        {{ breadcrumb(breadcrumb_items) }}
+
+        <!-- Page -->
+        <div data-x-inject="page">
+
+            <!-- Upload -->
+            <div id="upload-section">
+                <header>
+                    <div class="container-xl">
+                        <div class="p-6 border-bottom">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
+                                <div>
+                                    <h1 class="ls-tight h3">Upload</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <main class="py-6">
+                    <div class="container-xl">
+                        <div class="d-flex flex-column gap-6">
+                            <div>
+                                <div class="card shadow-none border border-2 border-dashed border-primary-hover position-relative">
+                                    <div class="d-flex justify-content-center px-16 py-16">
+                                        <label for="input-inference" class="stretched-link" role="button">
+                                            <input id="input-inference" name="input-inference" type="file" class="visually-hidden">
+                                        </label>
+                                        <div class="text-center">
+                                            <div class="text-2xl text-muted">
+                                                <i class="bi bi-upload"></i>
+                                            </div>
+                                            <div class="text-center mt-3">
+                                                <p class="fw-semibold">Upload an archive or drag and drop</p>
+                                            </div>
+                                            <p class="text-sm text-body-secondary">The archive must be a ZIP file containing both an IDF file and an EPW file.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="px-16 py-16 rounded gradient-bottom-right start-g-color-1 middle-g-color-2 end-g-color-3 text-center text-md-start">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-7">
+                                        <h1 class="ls-tighter display-6 mb-5 text-white">Start the analysis now</h1>
+                                        <p class="lead text-white text-opacity-75">Get started with a template analysis and see how EnergyPlus AI can help you optimize your building performance</p>
+                                    </div>
+                                    <div class="col-12 col-lg-5 mt-4 mt-md-0 text-md-end">
+                                        <button id="btn-get-started" class="btn btn-lg btn-white shadow-sm mx-2 px-lg-8" data-bs-toggle="modal">Get Started</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Analytics -->
+            <div id="analytics-section" class="d-none">
+
+                <!-- Building Overview -->
+                <header>
+                    <div class="container-xl">
+                        <div class="p-6 border-bottom">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
+                                <div>
+                                    <h1 class="ls-tight h3">Building Overview</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <main class="py-6">
+                    <div class="container-xl" data-x-inject="page">
+                        <div class="d-flex flex-column gap-4">
+                            <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-2 g-base">
+
+                                <!-- Jinja :: Widget -->
+                                {{ widget('w-building', 'Building', 'primary', 'bi-building', 0) }}
+                                {{ widget('w-floor-area', 'Floor Area (m<sup>2</sup>)', 'primary', 'bi-fullscreen', 0) }}
+                            </div>
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-base">
+
+                                <!-- Jinja :: Widget -->
+                                {{ widget('w-zones', 'Zones', 'primary', 'bi-thermometer-half', 0) }}
+                                {{ widget('w-walls', 'Walls', 'primary', 'bi-bricks', 0) }}
+                                {{ widget('w-windows', 'Windows', 'primary', 'bi-border-outer', 0) }}
+                                {{ widget('w-doors', 'Doors', 'primary', 'bi-door-open', 0) }}
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="d-flex gap-4 flex-column">
+                                        <div class="d-flex gap-4">
+                                            <div class="card flex-grow-1">
+                                                <div class="card-header">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex gap-1 align-items-center">
+                                                            <div>
+                                                                <h5>Rendering</h5>
+                                                                <p class="text-body-secondary text-sm ">An approximate representation of the building retrieved by the AI model</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ms-4">
+                                                            <button id="btn-export-rendering" class="btn btn-neutral btn-sm" type="button">Export</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+
+                                                    <!-- Rendering -->
+                                                    <div id="rendering"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Energy Simulation -->
+                <header>
+                    <div class="container-xl">
+                        <div class="p-6 border-bottom">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
+                                <div>
+                                    <h1 class="ls-tight h3">Energy Simulation</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <main class="py-6">
+                    <div class="container-xl" data-x-inject="page">
+                        <div class="d-flex flex-column gap-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="d-flex gap-4 flex-column">
+                                        <div class="d-flex gap-4">
+
+                                            <!-- Jinja :: Table -->
+                                            {{ table('table-energy-simulation') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Jinja :: Modal Processing -->
+{% include 'includes/analytics/modal-processing.html' %}
+{% endblock %}
+
+<!-- Jinja :: Scripts -->
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/plotly.js@3.4.0/dist/plotly.min.js"></script>
+<script>
+    window.APP_URL = {
+        'upload': `{{ request.url_for('analytics:upload') }}`
+    }
+</script>
+<script>
+
+    function init_widgets(data) {
+
+        // Sections
+        document.getElementById('upload-section').classList.add('d-none');
+        document.getElementById('analytics-section').classList.remove('d-none');
+
+        // Widgets
+        document.getElementById('w-building').innerText = data['Building-Name'];
+        document.getElementById('w-floor-area').innerText = data['Floor-Area-M2'];
+        document.getElementById('w-zones').innerText = data['Zones-Num'];
+        document.getElementById('w-walls').innerText = data['Walls-Num'];
+        document.getElementById('w-windows').innerText = data['Windows-Num'];
+        document.getElementById('w-doors').innerText = data['Doors-Num'];
+    }
+
+    function init_plot(div, plot_json) {
+
+        // Plot
+        const fig = JSON.parse(plot_json);
+        Plotly.newPlot(div, fig.data, fig.layout, {
+            displayModeBar: false,
+            responsive: true
+        });
+    }
+
+    document.getElementById('input-inference').addEventListener('change', async function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        const form_data = new FormData();
+        form_data.append('file', file);
+
+        try {
+            const response = await fetch(window.APP_URL.upload, {
+                method: 'POST',
+                body: form_data
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                init_widgets(data.widgets);
+                init_plot(document.getElementById('rendering'), data.rendering);
+            } else {
+                console.error(data.error);
+                alert(data.error);
+            }
+        } catch (error) {
+            console.error(error);
+            alert(error);
+        }
+    });
+</script>
+{% endblock %}

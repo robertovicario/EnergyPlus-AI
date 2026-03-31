@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-lg px-0 px-lg-3 ">
+    <div class="container-fluid">
+        <a class="d-none d-lg-inline-block navbar-brand" href="{{ request.url_for('templates:root') }}">
+            <img src="{{ request.url_for('static', path='img/enerergyplus_ai-dark.svg') }}" class="img-dark h-rem-7"
+                alt="enerergyplus_ai-dark" />
+            <img src="{{ request.url_for('static', path='img/enerergyplus_ai-light.svg') }}" class="img-light h-rem-7"
+                alt="enerergyplus_ai-light" />
+        </a>
+        <div class="navbar-nav align-items-center ms-auto order-lg-last">
+            <a href="{{ config.system.repository.url }}"
+                class="btn btn-white border d-inline-flex align-items-center gap-3">
+                <span class="icon icon-sm">
+                    <img src="https://assets.webpixels.io/img/social/github.svg" class="w-rem-5 h-rem-5" alt="GitHub" />
+                </span>
+                Learn More
+            </a>
+        </div>
+    </div>
+</nav>

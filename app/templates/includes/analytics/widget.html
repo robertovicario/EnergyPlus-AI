@@ -1,0 +1,20 @@
+{% macro widget(id, title, theme, icon, value) %}
+<div class="col">
+    <div class="card flex-grow-1">
+        <div class="card-body">
+            <div class="d-flex gap-4 align-items-center">
+                <div class="icon icon-shape flex-none text-lg text-bg-{{ theme }}">
+                    <i class="bi {{ icon }}"></i>
+                </div>
+                <div>
+                    <div class="h6 text-body-secondary mb-1">{{ title | safe }}</div>
+                    <div id="{{ id }}"
+                        class="d-flex align-items-center text-xl text-heading fw-semibold lh-xs ls-tight">
+                        {{ value }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}

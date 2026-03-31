@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html data-bs-theme="{{ config.ui.theme }}" lang="{{ config.system.lang }}">
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<!-- HEAD -->
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<head>
+
+    <!-- ------------------------------------------------------------------------------------------ -->
+    <!-- META -->
+    <!-- ------------------------------------------------------------------------------------------ -->
+
+    <!-- Metatag -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <!-- Theme -->
+    <title>{{ theme_title }} – {{ config.system.name }}</title>
+    <meta name="theme-color" content="{{ config.ui.main_color }}"/>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ request.url_for('static', path='img/favicons/android-chrome-192x192.png') }}"/>
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ request.url_for('static', path='img/favicons/android-chrome-512x512.png') }}"/>
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="{{ request.url_for('static', path='img/favicons/apple-touch-icon.png') }}"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ request.url_for('static', path='img/favicons/favicon-16x16.png') }}"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ request.url_for('static', path='img/favicons/favicon-32x32.png') }}"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ request.url_for('static', path='img/favicons/favicon-32x32.png') }}"/>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ request.url_for('static', path='img/favicons/favicon.ico') }}">
+
+    <!-- ------------------------------------------------------------------------------------------ -->
+    <!-- STYLES -->
+    <!-- ------------------------------------------------------------------------------------------ -->
+
+    <!-- Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@webpixels/css@3.0.0/dist/all.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ request.url_for('static', path='css/root.css') }}">
+    <link rel="stylesheet" href="{{ request.url_for('static', path='css/bs-theme-overrides.css') }}">
+    <link rel="stylesheet" href="{{ request.url_for('static', path='css/components/flash.css') }}">
+    <link rel="stylesheet" href="{{ request.url_for('static', path='css/components/table.css') }}">
+    <link rel="stylesheet" href="{{ request.url_for('static', path='css/components/spinner_page.css') }}">
+</head>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<!-- BODY -->
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<body>
+
+    <!-- Main -->
+    <div class="d-flex flex-column flex-lg-row h-lg-100 bg-body-tertiary" data-x-type="layout">
+
+        <!-- Jinja :: Sidebar -->
+        {% include 'components/sidebar.html' %}
+
+        <!-- Jinja :: Content -->
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Jinja :: Scripts -->
+    {% block scripts %}{% endblock %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const html = document.documentElement;
+            const lightBtn = document.getElementById("option1");
+            const darkBtn = document.getElementById("option2");
+
+            // Carica preferenza salvata
+            const savedTheme = localStorage.getItem("theme");
+
+            if (savedTheme) {
+                html.setAttribute("data-bs-theme", savedTheme);
+
+                if (savedTheme === "dark") {
+                    darkBtn.checked = true;
+                } else {
+                    lightBtn.checked = true;
+                }
+            }
+
+            // Light mode
+            lightBtn.addEventListener("change", function () {
+                if (this.checked) {
+                    html.setAttribute("data-bs-theme", "light");
+                    localStorage.setItem("theme", "light");
+                }
+            });
+
+            // Dark mode
+            darkBtn.addEventListener("change", function () {
+                if (this.checked) {
+                    html.setAttribute("data-bs-theme", "dark");
+                    localStorage.setItem("theme", "dark");
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>

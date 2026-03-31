@@ -1,0 +1,22 @@
+{
+    "system": {
+        "lang": "en",
+        "name": "EnergyPlus AI",
+        "port": 8000,
+        "version": "1.0.0",
+        "repository": {
+            "server": "github.com",
+            "user": "robertovicario",
+            "name": "EnergyPlus-AI",
+            "url": "https://github.com/robertovicario/EnergyPlus-AI"
+        }
+    },
+    "ui": {
+        "theme": "light",
+        "primary": "#4DAA57"
+    },
+    "ux": {
+        "flash_timeout": 5000,
+        "waiting_time": 2
+    }
+}

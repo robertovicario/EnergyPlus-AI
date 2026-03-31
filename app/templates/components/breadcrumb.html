@@ -1,0 +1,24 @@
+{% macro breadcrumb(items) %}
+<div class="d-flex gap-2 align-items-center px-4 py-3">
+    <button type="button"
+        class="btn btn-sm btn-square btn-accent bg-body bg-accent-hover shadow-none border-0 ms-n2 d-lg-none"
+        data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+        <i class="bi bi-layout-sidebar"></i>
+    </button>
+    <span class="vr h-rem-4 me-2 align-self-center d-lg-none"></span>
+    <nav>
+        <ol class="d-flex justify-content-center align-items-center breadcrumb">
+            {% for item in items %}
+            {% if loop.last %}
+            <li class="breadcrumb-item active" aria-current="page">{{ item.label }}</li>
+            {% else %}
+            <li class="breadcrumb-item">
+                <a href="{{ item.url }}" class="text-body-secondary text-body-hover">{{ item.label }}</a>
+            </li>
+            <i class="bi bi-chevron-right mx-2 text-body-secondary text-xs"></i>
+            {% endif %}
+            {% endfor %}
+        </ol>
+    </nav>
+</div>
+{% endmacro %}

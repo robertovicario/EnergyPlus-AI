@@ -1,0 +1,154 @@
+<div class="offcanvas-lg offcanvas-start w-rem-80 w-lg-auto vh-100" data-bs-scroll="true" tabindex="-1"
+    id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+    <nav class="sidebar w-100 w-rem-lg-64 d-flex flex-column flex-shrink-0 position-relative z-2 h-100">
+        <div class="dropdown-center px-4 py-2 mx-n2 position-relative">
+            <button type="button"
+                class="w-100 px-2 py-2 text-start border-0 bg-transparent shadow-none bg-accent-hover rounded d-flex gap-3 align-items-center"
+                data-bs-toggle="dropdown">
+                <img src="{{ request.url_for('static', path='img/enerergyplus_ai-dark.svg') }}"
+                    class="img-dark avatar avatar-sm" alt="enerergyplus_ai-dark" />
+                <img src="{{ request.url_for('static', path='img/enerergyplus_ai-light.svg') }}"
+                    class="img-light avatar avatar-sm" alt="enerergyplus_ai-light" />
+                <div class="d-grid flex-grow-1 ls-tight text-sm">
+                    <span class="text-truncate text-heading fw-semibold">EnergyPlus AI</span>
+                    <span class="text-truncate text-xs text-body-secondary mt-n1">v{{ config.system.version }}</span>
+                </div>
+                <span class="ms-auto" role="button">
+                    <i class="bi bi-chevron-expand"></i>
+                </span>
+            </button>
+            <div class="dropdown-menu" style="--x-dropdown-min-width: 88%;">
+                <div class="vstack gap-1">
+                    <div class="dropdown-header px-2">
+                        <span class="d-block text-xs text-muted">Switch Workspace</span>
+                    </div>
+                    <a href="{{ config.system.repository.url }}" class="dropdown-item px-2">
+                        <div class="position-relative d-flex align-items-center gap-3">
+                            <img src="{{ request.url_for('static', path='img/enerergyplus_ai-light.svg') }}"
+                                class="avatar avatar-xs" alt="energyplus_ai-light.svg" />
+                            <div class="me-auto">
+                                <span class="d-inline-block text-sm fw-semibold">
+                                    EnergyPlus AI
+                                </span>
+                            </div>
+                            <span
+                                class="badge badge-xs bg-success-subtle text-success border border-success-subtle rounded-pill ms-6">Active</span>
+                        </div>
+                    </a>
+                    <a href="https://energyplus.net" class="dropdown-item px-2">
+                        <div class="position-relative d-flex align-items-center gap-3">
+                            <img src="https://energyplus.net/favicon.ico" class="avatar avatar-xs"
+                                alt="energyplus.net/favicon.ico" />
+                            <div>
+                                <span class="d-inline-block text-sm fw-semibold">
+                                    EnergyPlus
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="px-4 py-4 flex-fill overflow-y-auto scrollbar">
+            <div class="vstack gap-5">
+                <div>
+                    <div class="d-flex align-items-center px-3 px-lg-0 mb-1">
+                        <span class="d-block text-xs text-body-secondary fw-semibold me-auto">Menu</span>
+                    </div>
+                    <ul class="navbar-nav navbar-vertical-nav gap-0.5 mx-lg-n2">
+                        <li class="nav-item">
+                            <a class="nav-link px-2 rounded-1 bg-accent-hover" href="{{ request.url_for('templates:root') }}">
+                                <i class="bi bi-house"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-2 rounded-1 bg-accent-hover" href="{{ request.url_for('templates:analytics') }}">
+                                <i class="bi bi-graph-up"></i>
+                                Analytics
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-2 rounded-1 bg-accent-hover" href="{{ request.url_for('templates:templates') }}">
+                                <i class="bi bi-archive"></i>
+                                Templates
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="d-flex align-items-center px-3 px-lg-0 mb-1">
+                        <span class="d-block text-xs text-body-secondary fw-semibold me-auto">Resources</span>
+                    </div>
+                    <ul class="navbar-nav navbar-vertical-nav gap-0.5 mx-lg-n2">
+                        <li class="nav-item">
+                            <a class="nav-link px-2 rounded-1 bg-accent-hover" href="{{ request.url_for('templates:documentation') }}">
+                                <i class="bi bi-book"></i>
+                                Documentation
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-2 rounded-1 bg-accent-hover" href="{{ request.url_for('templates:changelog') }}">
+                                <i class="bi bi-journal-text"></i>
+                                Changelog
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-2 rounded-1 bg-accent-hover" href="{{ request.url_for('templates:support') }}">
+                                <i class="bi bi-life-preserver"></i>
+                                Support
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="px-4 mx-n2">
+            <div class="dropend">
+                <div class="dropdown-menu w-100">
+                    <div class="vstack gap-1">
+                        <div class="dropdown-header px-2">
+                            <span class="d-block text-xs text-muted">Switch Workspace</span>
+                        </div>
+                        <a href="#" class="dropdown-item px-2">
+                            <div class="position-relative d-flex align-items-center gap-3">
+                                <img src="{{ request.url_for('static', path='img/enerergyplus_ai-light.svg') }}"
+                                    class="avatar avatar-xs" alt="energyplus_ai-light.svg" />
+                                <div class="me-auto">
+                                    <span class="d-inline-block text-sm fw-semibold">
+                                        Energy Plus AI
+                                    </span>
+                                </div>
+                                <span
+                                    class="badge badge-xs bg-success-subtle text-success border border-success-subtle rounded-pill ms-6">Active</span>
+                            </div>
+                        </a>
+                        <a href="https://energyplus.net" class="dropdown-item px-2">
+                            <div class="position-relative d-flex align-items-center gap-3">
+                                <img src="https://energyplus.net/favicon.ico" class="avatar avatar-xs"
+                                    alt="energyplus.net/favicon.ico" />
+                                <div>
+                                    <span class="d-inline-block text-sm fw-semibold">
+                                        EnergyPlus
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 mt-2 mb-4" role="group" aria-label="Basic example">
+                <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked="">
+                <label class="btn btn-sm btn-neutral flex-fill" for="option1">
+                    <i class="bi bi-sun"></i>
+                    <span class="ms-1">Light</span>
+                </label>
+                <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+                <label class="btn btn-sm btn-neutral flex-fill" for="option2">
+                    <i class="bi bi-moon-stars"></i>
+                    <span class="ms-1">Dark</span>
+                </label>
+            </div>
+        </div>
+    </nav>
+</div>

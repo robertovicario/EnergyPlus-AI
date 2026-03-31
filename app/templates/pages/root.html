@@ -1,0 +1,48 @@
+<!-- Jinja :: Template -->
+{% extends 'base-2.html' %}
+
+<!-- Jinja :: Theme -->
+{% set theme_title = 'Home' %}
+
+<!-- Jinja :: Content -->
+{% block content %}
+<div class="flex-lg-fill overflow-x-auto vstack vh-100">
+    <div class="flex-fill overflow-y-lg-auto mt-lg-2 scrollbar bg-body rounded-top-start border-top-lg border-start-lg shadow-lg-2"
+        data-x-inject="page">
+        <div class="d-flex gap-2 align-items-center px-4 py-3">
+            <button type="button"
+                class="btn btn-sm btn-square btn-accent bg-body bg-accent-hover shadow-none border-0 ms-n2 d-lg-none"
+                data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+                <i class="bi bi-layout-sidebar"></i>
+            </button>
+            <span class="vr h-rem-4 me-2 align-self-center d-lg-none"></span>
+            <nav style="--x-breadcrumb-divider: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' fill='currentColor' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708'/%3E%3C/svg%3E&quot;);"
+                aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#" class="text-body-secondary text-body-hover">{{ config.system.name }}</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Home</li>
+                </ol>
+            </nav>
+        </div>
+        <div data-x-inject="page">
+            <div class="px-4 pb-4">
+                <div class="d-flex flex-column flex-grow-1 gap-4">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="ratio ratio-16x9 bg-body-secondary rounded"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="ratio ratio-16x9 bg-body-secondary rounded"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="ratio ratio-16x9 bg-body-secondary rounded"></div>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 bg-body-secondary rounded"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

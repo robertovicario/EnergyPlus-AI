@@ -1,0 +1,29 @@
+<div class="modal fade" id="modal-processing" tabindex="-1" aria-labelledby="modal-processing" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-8">
+                <div class="text-center p-6">
+                    <div class="icon icon-shape rounded-circle bg-opacity-25 bg-primary text-primary text-lg">
+                        <i class="bi bi-robot"></i>
+                    </div>
+                    <h3 class="mt-8 mb-4">AI Model is processing</h3>
+                    <p class="mb-4 text-sm text-muted">
+                        Please, be patient and wait until the AI model is finished processing.
+                    </p>
+                    <div class="d-flex align-items-center gap-3 mt-auto">
+                        <div id="progress-bar" class="progress flex-fill h-rem-2" role="progressbar"
+                            aria-label="progress-bar" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar" style="width: 0%"></div>
+                        </div>
+                        <span id="progress-text" class="text-body-secondary text-sm fw-semibold">0%</span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center gap-3 my-2">
+                    <button id="btn-stop-run" class="btn btn-sm btn-danger" type="button" data-bs-dismiss="modal">Stop
+                        Run</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
