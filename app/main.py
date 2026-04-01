@@ -29,6 +29,13 @@ app.mount(
         directory=os.path.join(os.path.dirname(__file__), 'static')
     ), name='static'
 )
+app.mount(
+    '/data/templates',
+    StaticFiles(
+        directory=os.path.join(os.path.dirname(__file__), 'data/templates')
+    ),
+    name='data-templates'
+)
 
 # =========================
 # Configurations
@@ -45,7 +52,7 @@ config = {
 }
 
 @app.middleware('http')
-async def add_configs_to_request(request: Request, call_next):
+async def add_config_to_request(request: Request, call_next):
     request.state.config = config
     response = await call_next(request)
     return response

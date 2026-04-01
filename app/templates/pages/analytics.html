@@ -71,7 +71,7 @@
                                         <p class="lead text-white text-opacity-75">Get started with a template analysis and see how EnergyPlus AI can help you optimize your building performance</p>
                                     </div>
                                     <div class="col-12 col-lg-5 mt-4 mt-md-0 text-md-end">
-                                        <button id="btn-get-started" class="btn btn-lg btn-white shadow-sm mx-2 px-lg-8" data-bs-toggle="modal">Get Started</button>
+                                        <button id="btn-get-started" class="btn btn-lg btn-white shadow-sm mx-2 px-lg-8">Get Started</button>
                                     </div>
                                 </div>
                             </div>
@@ -82,90 +82,82 @@
 
             <!-- Analytics -->
             <div id="analytics-section" class="d-none">
-
-                <!-- Building Overview -->
-                <header>
-                    <div class="container-xl">
-                        <div class="p-6 border-bottom">
-                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
-                                <div>
-                                    <h1 class="ls-tight h3">Building Overview</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </header>
                 <main class="py-6">
-                    <div class="container-xl" data-x-inject="page">
-                        <div class="d-flex flex-column gap-4">
-                            <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-2 g-base">
+                    <div class="container-xl d-flex flex-column gap-6" data-x-inject="page">
 
-                                <!-- Jinja :: Widget -->
-                                {{ widget('w-building', 'Building', 'primary', 'bi-building', 0) }}
-                                {{ widget('w-floor-area', 'Floor Area (m<sup>2</sup>)', 'primary', 'bi-fullscreen', 0) }}
-                            </div>
-                            <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-base">
+                        <!-- Navs -->
+                        <ul class="nav nav-underline gap-6 overflow-x border-bottom">
+                            <li class="nav-item">
+                                <a href="#tab-1" class="nav-link active" data-bs-toggle="tab">Building Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tab-2" class="nav-link font-regular" data-bs-toggle="tab">Energy Simulation</a>
+                            </li>
+                        </ul>
 
-                                <!-- Jinja :: Widget -->
-                                {{ widget('w-zones', 'Zones', 'primary', 'bi-thermometer-half', 0) }}
-                                {{ widget('w-walls', 'Walls', 'primary', 'bi-bricks', 0) }}
-                                {{ widget('w-windows', 'Windows', 'primary', 'bi-border-outer', 0) }}
-                                {{ widget('w-doors', 'Doors', 'primary', 'bi-door-open', 0) }}
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="d-flex gap-4 flex-column">
-                                        <div class="d-flex gap-4">
-                                            <div class="card flex-grow-1">
-                                                <div class="card-header">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div class="d-flex gap-1 align-items-center">
-                                                            <div>
-                                                                <h5>Rendering</h5>
-                                                                <p class="text-body-secondary text-sm ">An approximate representation of the building retrieved by the AI model</p>
+                        <!-- Tabs -->
+                        <div class="tab-content">
+
+                            <!-- Building Overview -->
+                            <div class="tab-pane fade show active" id="tab-1">
+                                <div class="d-flex flex-column gap-4">
+                                    <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-2 g-base">
+
+                                        <!-- Jinja :: Widget -->
+                                        {{ widget('w-building', 'Building', 'primary', 'bi-building', 0) }}
+                                        {{ widget('w-floor-area', 'Floor Area (m<sup>2</sup>)', 'primary', 'bi-fullscreen', 0) }}
+                                    </div>
+                                    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-base">
+
+                                        <!-- Jinja :: Widget -->
+                                        {{ widget('w-zones', 'Zones', 'primary', 'bi-thermometer-half', 0) }}
+                                        {{ widget('w-walls', 'Walls', 'primary', 'bi-bricks', 0) }}
+                                        {{ widget('w-windows', 'Windows', 'primary', 'bi-border-outer', 0) }}
+                                        {{ widget('w-doors', 'Doors', 'primary', 'bi-door-open', 0) }}
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="d-flex gap-4 flex-column">
+                                                <div class="d-flex gap-4">
+                                                    <div class="card flex-grow-1">
+                                                        <div class="card-header">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div class="d-flex gap-1 align-items-center">
+                                                                    <div>
+                                                                        <h5>Rendering</h5>
+                                                                        <p class="text-body-secondary text-sm ">An approximate representation of the building retrieved by the AI model</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="ms-4">
+                                                                    <button id="btn-export-rendering" class="btn btn-neutral btn-sm" type="button">Export</button>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="ms-4">
-                                                            <button id="btn-export-rendering" class="btn btn-neutral btn-sm" type="button">Export</button>
+                                                        <div class="card-body">
+
+                                                            <!-- Rendering -->
+                                                            <div id="rendering"></div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="card-body">
-
-                                                    <!-- Rendering -->
-                                                    <div id="rendering"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </main>
 
-                <!-- Energy Simulation -->
-                <header>
-                    <div class="container-xl">
-                        <div class="p-6 border-bottom">
-                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
-                                <div>
-                                    <h1 class="ls-tight h3">Energy Simulation</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-                <main class="py-6">
-                    <div class="container-xl" data-x-inject="page">
-                        <div class="d-flex flex-column gap-4">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="d-flex gap-4 flex-column">
-                                        <div class="d-flex gap-4">
+                            <!-- Energy Simulation -->
+                            <div class="tab-pane fade" id="tab-2">
+                                <div class="d-flex flex-column gap-4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="d-flex gap-4 flex-column">
+                                                <div class="d-flex gap-4">
 
-                                            <!-- Jinja :: Table -->
-                                            {{ table('table-energy-simulation') }}
+                                                    <!-- Jinja :: Table -->
+                                                    {{ table('table-energy-simulation') }}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -187,8 +179,10 @@
 <script src="https://cdn.jsdelivr.net/npm/plotly.js@3.4.0/dist/plotly.min.js"></script>
 <script>
     window.APP_URL = {
-        'upload': `{{ request.url_for('analytics:upload') }}`
+        upload: `{{ request.url_for('analytics:upload') }}`,
+        template_1: `{{ request.url_for('data-templates', path='template-1.zip') }}`
     }
+</script>
 </script>
 <script>
 
@@ -217,7 +211,7 @@
         });
     }
 
-    document.getElementById('input-inference').addEventListener('change', async function () {
+    document.getElementById('input-inference').addEventListener('change', async function() {
         const file = this.files[0];
         if (!file) return;
 
@@ -242,6 +236,15 @@
             console.error(error);
             alert(error);
         }
+    });
+
+    document.getElementById('btn-export-rendering').addEventListener('click', function() {
+        const rendering = document.getElementById('rendering');
+        const filename = `EnergyPlus_AI_${document.getElementById('w-building').innerText}`.replace(/\s+/g, '_');
+        Plotly.downloadImage(rendering, {
+            format: 'png',
+            filename: filename
+        });
     });
 </script>
 {% endblock %}

@@ -3,10 +3,12 @@ fastapi
 ipykernel
 ipywidgets
 jupyter
+ladybug-core
 loguru
 matplotlib
 numpy
 pandas
 plotly
+python-multipart
 uvicorn
 ydata-profiling

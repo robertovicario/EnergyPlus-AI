@@ -2,17 +2,13 @@
 /* Root */
 /* ========================= */
 
-:root {
+/* :root {
 	--primary: #4daa57;
-}
+} */
 
-::selection {
+/* ::selection {
 	color: var(--bs-primary);
 	background-color: var(--bs-primary-bg-subtle);
-}
-
-body {
-	font-family: 'Noto Sans', sans-serif !important;
-}
+} */
 
 /* ========================= */

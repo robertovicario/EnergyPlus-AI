@@ -4,15 +4,15 @@ services:
         container_name: "energyplus_ai"
         image: "energyplus_ai:latest"
         build:
-            context: "."
-            dockerfile: "dev/Dockerfile"
+            context: ./app
+            dockerfile: Dockerfile
         env_file:
             - env/app.env
+        environment:
+            - PORT=8000
         ports:
             - "8000:8000"
         volumes:
             - ./app:/app
-            - ./data:/app/data
-        depends_on:
-            - redis
+            - ./app/data:/app/data
         restart: unless-stopped
