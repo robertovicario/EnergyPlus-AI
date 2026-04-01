@@ -1,20 +1,10 @@
 services:
-
     - type: web
       name: energyplus-ai
       env: docker
-      dockerfilePath: docker/Dockerfile.app
       plan: free
+      dockerfilePath: app/Dockerfile
+      dockerContext: app
       envVars:
           - key: PORT
-            value: 10000
-          - key: REDIS_URL
-            fromService:
-                type: redis
-                name: energyplus-redis
-                property: connectionString
-          - key: ENV
-            value: production
-
-    - type: redis
-      name: energyplus-redis
+            value: 8000
