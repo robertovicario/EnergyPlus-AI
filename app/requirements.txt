@@ -1,8 +1,5 @@
 eppy
 fastapi
-ipykernel
-ipywidgets
-jupyter
 ladybug-core
 loguru
 matplotlib
@@ -11,4 +8,3 @@ pandas
 plotly
 python-multipart
 uvicorn
-ydata-profiling
