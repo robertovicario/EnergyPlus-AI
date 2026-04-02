@@ -5,7 +5,7 @@
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 
-from config.logging import logger, log_request
+from config.logger import logger, log_request
 
 # =========================
 # FastAPI
@@ -18,15 +18,15 @@ jinja_templates = Jinja2Templates(directory='templates')
 # Templates
 # =========================
 
-@router.get('/', name='templates:root')
-def root(request: Request):
+@router.get('/', name='templates:home')
+def home(request: Request):
 
     # Request Logging
     log_request(request)
 
     # -------------------------
 
-    template = 'pages/root.html'
+    template = 'pages/home.html'
     logger.debug(f"Rendering template: {template}")
 
     # -------------------------

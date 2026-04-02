@@ -12,7 +12,7 @@ import uuid
 import zipfile
 
 from api import analytics as this_api
-from config.logging import logger, log_request
+from config.logger import logger, log_request
 
 # =========================
 # Configurations
@@ -21,14 +21,13 @@ from config.logging import logger, log_request
 # FastAPI
 router = APIRouter(prefix='/analytics', tags=['analytics'])
 
-# Progress Tracking
-PROGRESS = {}
-RESULTS = {}
-
 # EnergyPlus API
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', 'data'))
-IDD_FILE = os.path.join(DATA_PATH, 'config', 'Energy+.idd')
+IDD_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', 'data', 'config'))
+IDD_FILE = os.path.join(IDD_PATH, 'Energy+.idd')
+
+# Progress Tracking
+PROGRESS = {}
 
 # =========================
 # Endpoints

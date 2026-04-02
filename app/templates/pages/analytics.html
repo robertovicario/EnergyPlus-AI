@@ -18,7 +18,7 @@
         {% set breadcrumb_items = [
             {
                 'label': config.system.name,
-                'url': request.url_for('templates:root')
+                'url': request.url_for('templates:home')
             },
             {
                 'label': 'Analytics',
@@ -179,8 +179,7 @@
 <script src="https://cdn.jsdelivr.net/npm/plotly.js@3.4.0/dist/plotly.min.js"></script>
 <script>
     window.APP_URL = {
-        upload: `{{ request.url_for('analytics:upload') }}`,
-        template_1: `{{ request.url_for('data-templates', path='template-1.zip') }}`
+        upload: `{{ request.url_for('analytics:upload') }}`
     }
 </script>
 </script>

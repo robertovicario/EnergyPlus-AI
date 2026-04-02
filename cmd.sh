@@ -44,8 +44,9 @@ debug() {
     printer -setup "Starting debug..."
 
     # Docker Ops
+    docker builder prune -f
     docker-compose down --volumes
-    docker-compose up -d
+    docker-compose up -d --build
     handler
 }
 
@@ -63,7 +64,8 @@ setup() {
     cd ..
 
     # Docker Ops
-    docker-compose down --volumes
+    docker-compose down --volumes --rmi all
+    docker builder prune -f
     docker-compose up -d --build
     handler
 }

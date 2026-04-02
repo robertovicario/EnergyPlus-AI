@@ -1,0 +1,45 @@
+<!-- Jinja :: Template -->
+{% extends 'base-2.html' %}
+
+<!-- Jinja :: Theme -->
+{% set theme_title = 'Home' %}
+
+<!-- Jinja :: Macros -->
+{% from 'components/breadcrumb.html' import breadcrumb %}
+
+<!-- Jinja :: Content -->
+{% block content %}
+<div class="flex-lg-fill overflow-x-auto vstack vh-100">
+    <div class="flex-fill overflow-y-lg-auto mt-lg-2 scrollbar bg-body rounded-top-start border-top-lg border-start-lg shadow-lg-2" data-x-inject="page">
+
+        <!-- Jinja :: Breadcrumb -->
+        {% set breadcrumb_items = [
+            {
+                'label': config.system.name,
+                'url': request.url_for('templates:home')
+            },
+            {
+                'label': 'Home',
+                'url': '#'
+            }
+        ] %}
+        {{ breadcrumb(breadcrumb_items) }}
+
+        <!-- Page -->
+        <div data-x-inject="page">
+
+            <!-- Home -->
+            <div class="d-none">
+                <main class="py-6">
+                    <div class="container-xl d-flex flex-column gap-6" data-x-inject="page">
+                            <div class="d-flex flex-column gap-4">
+                                <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-2 g-base"></div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

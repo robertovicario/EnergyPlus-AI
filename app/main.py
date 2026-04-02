@@ -26,15 +26,9 @@ app.include_router(templates.router)
 app.mount(
     '/static',
     StaticFiles(
-        directory=os.path.join(os.path.dirname(__file__), 'static')
-    ), name='static'
-)
-app.mount(
-    '/data/templates',
-    StaticFiles(
-        directory=os.path.join(os.path.dirname(__file__), 'data/templates')
-    ),
-    name='data-templates'
+        directory=os.path.join(os.path.dirname(__file__),
+        'static'
+    )), name='static'
 )
 
 # =========================
