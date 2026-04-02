@@ -12,13 +12,9 @@ import traceback
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_API = 'https://api.github.com/repos/robertovicario/EnergyPlus-AI/contents'
-IDD_URL = 'https://raw.githubusercontent.com/robertovicario/EnergyPlus-AI/main/app/data/config/Energy+.idd'
+IDD_URL = 'https://raw.githubusercontent.com/robertovicario/EnergyPlus-AI/main/data/config/Energy+.idd'
 CONFIG_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', 'data', 'config'))
-TEMPLATES_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', 'templates'))
-DOWNLOAD_MAP = {
-    'app/data/config': CONFIG_PATH,
-    'app/templates': TEMPLATES_PATH,
-}
+TEMPLATES_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', 'data', 'templates'))
 
 # =========================
 # Methods
@@ -26,16 +22,15 @@ DOWNLOAD_MAP = {
 
 def download_idd():
     os.makedirs(CONFIG_PATH, exist_ok=True)
-    dest = os.path.join(CONFIG_PATH, "Energy+.idd")
+    dest = os.path.join(CONFIG_PATH, 'Energy+.idd')
 
     if os.path.exists(dest):
-        print("IDD already exists")
         return
 
     r = requests.get(IDD_URL, timeout=10)
     r.raise_for_status()
 
-    with open(dest, "wb") as f:
+    with open(dest, 'wb') as f:
         f.write(r.content)
 
 def download_templates(repo_path: str, local_path: str):
@@ -70,7 +65,7 @@ def download_templates(repo_path: str, local_path: str):
 
 def init():
     download_idd()
-    download_templates('app/templates', TEMPLATES_PATH)
+    download_templates('data/templates', TEMPLATES_PATH)
 
 # =========================
 # Entrypoint
