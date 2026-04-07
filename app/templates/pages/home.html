@@ -27,18 +27,60 @@
 
         <!-- Page -->
         <div data-x-inject="page">
+            <main class="py-12 py-lg-24">
+                <div class="container-xl">
 
-            <!-- Home -->
-            <div class="d-none">
-                <main class="py-6">
-                    <div class="container-xl d-flex flex-column gap-6" data-x-inject="page">
-                            <div class="d-flex flex-column gap-4">
-                                <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-2 g-base"></div>
+                    <!-- Header -->
+                    <div class="row justify-content-center text-center mb-10">
+                        <div class="col-lg-7">
+                            <div class="text-primary fw-semibold mb-4">Features</div>
+                            <h1 class="display-6 ls-tighter">Analyze and optimize your buildings</h1>
+                            <p class="lead mt-5 text-body-secondary">Leverage predictive analytics to estimate building energy consumption and transform model outputs into interpretable insights.</p>
+
+                            <!-- CTA -->
+                            <div class="text-center mt-10">
+                                <a href="{{ request.url_for('templates:analytics') }}" class="btn btn-lg btn-primary px-8 shadow-sm">Get Started</a>
                             </div>
                         </div>
                     </div>
-                </main>
-            </div>
+                    <div class="row justify-content-center g-8">
+
+                        <!-- Energy Simulation -->
+                        <div class="col-lg-5">
+                            <div class="card bg-body-secondary border-0 shadow-none">
+                                <div class="card-body px-6 py-8">
+                                    <div class="d-flex align-items-start gap-6">
+                                        <div class="flex-none icon icon-shape bg-body text-heading border shadow-soft-2 rounded text-lg">
+                                            <i class="bi bi-lightning-charge"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="h4 mb-2">Energy Simulation</h5>
+                                            <p>Run detailed simulations to estimate energy consumption, loads, and system performance under real conditions.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Machine Learning -->
+                        <div class="col-lg-5">
+                            <div class="card bg-body-secondary border-0 shadow-none">
+                                <div class="card-body px-6 py-8">
+                                    <div class="d-flex align-items-start gap-6">
+                                        <div class="flex-none icon icon-shape bg-body text-heading border shadow-soft-2 rounded text-lg">
+                                            <i class="bi bi-robot"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="h4 mb-2">Machine Learning</h5>
+                                            <p>Transform complex simulation outputs into actionable insights using advanced machine learning models.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 </div>

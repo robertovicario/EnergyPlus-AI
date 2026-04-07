@@ -1,5 +1,5 @@
 eppy
-fastapi
+fastparquet
 ipykernel
 ipywidgets
 jupyter
@@ -10,5 +10,6 @@ numpy
 pandas
 plotly
 python-multipart
-uvicorn
+scikit-learn
+shap
 ydata-profiling

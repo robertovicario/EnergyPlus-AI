@@ -1,8 +1,7 @@
 services:
 
-    energyplus_ai:
-        container_name: "energyplus_ai"
-        image: "energyplus_ai:latest"
+    app:
+        container_name: "app"
         build:
             context: ./app
             dockerfile: Dockerfile

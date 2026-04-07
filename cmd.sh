@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Variables
-VENV_PATH="venv/"
+PYTHON_VERSION="3.12"
+VENV_PATH="venv"
 
 # Icons
 ICON_START="▶"
@@ -25,18 +25,18 @@ YELLOW="\033[33m"
 # -------------------------
 
 start() {
-    printer -start "Starting the app..."
+    printer -start "Starting the project..."
 
     # Docker Ops
-    docker-compose start
+    docker compose start
     handler
 }
 
 stop() {
-    printer -stop "Stopping the app..."
+    printer -stop "Stopping the project..."
 
     # Docker Ops
-    docker-compose stop
+    docker compose stop
     handler
 }
 
@@ -45,71 +45,79 @@ debug() {
 
     # Docker Ops
     docker builder prune -f
-    docker-compose down --volumes
-    docker-compose up -d --build
+    docker compose down --volumes
+    docker compose up -d --build
     handler
 }
 
 setup() {
-    printer -setup "Setting up the app..."
+    printer -setup "Setting up the project..."
 
     # Environment
-    cd app
-    python3 -m venv $VENV_PATH
-    source $VENV_PATH/bin/activate
+    if [ -d "${VENV_PATH}" ]; then
+        rm -rf ${VENV_PATH}
+    fi
 
-    # Dependencies
-    python3 -m pip install --upgrade pip
-    python3 -m pip install -r requirements.txt
-    cd ..
+    python${PYTHON_VERSION} -m venv ${VENV_PATH}
+    source ${VENV_PATH}/bin/activate
+    pip install --upgrade pip
+    pip install -r requirements.txt
+    deactivate
 
     # Docker Ops
-    docker-compose down --volumes --rmi all
+    docker compose down --volumes --rmi all
     docker builder prune -f
-    docker-compose up -d --build
+    docker compose up -d --build
     handler
 }
 
-clean() {
+install() {
+    printer -install "Installing dependencies..."
 
-    # Option
-    OPTION=$1
-    if [[ "$OPTION" != --* ]]; then
-        printer -error "Invalid option: $OPTION"
+    # Validation
+    if [[ "$#" -lt 3 ]]; then
         usage
+        exit 1
     fi
 
-    # Type
-    TYPE="${OPTION#--}"
-    case "$TYPE" in
-        env)
+    local SERVICE="$1"
+    local MANAGER="$2"
+    shift 2
+    local PACKAGE="$@"
+    local CONTAINER_ID
 
-            # Environment
-            printer -clean "Cleaning environment..."
-            if [ -d "app/$VENV_PATH" ]; then
-                rm -rf "app/$VENV_PATH"
-            fi
+    CONTAINER_ID=$(docker compose ps -q "$SERVICE")
+    if [[ -z "$CONTAINER_ID" ]]; then
+        printer -error "Container for is not running"
+        exit 1
+    fi
+
+    # Docker Ops
+    case "$MANAGER" in
+        pip)
+            docker compose exec "$CONTAINER" pip install $PACKAGE
             ;;
-        docker)
-            printer -clean "Cleaning Docker containers, volumes and images..."
-            docker-compose down --volumes --rmi all
+        npm)
+            docker compose exec "$CONTAINER" npm install $PACKAGE
             ;;
-        all)
-            printer -clean "Cleaning all..."
-
-            # Environment
-            printer -clean "Cleaning environment..."
-            if [ -d "app/$VENV_PATH" ]; then
-                rm -rf "app/$VENV_PATH"
-            fi
-
-            # Docker Ops
-            docker-compose down --volumes --rmi all
+        yarn)
+            docker compose exec "$CONTAINER" yarn add $PACKAGE
+            ;;
+        apt)
+            docker compose exec "$CONTAINER" apt update && apt install -y $PACKAGE
             ;;
         *)
             usage
             ;;
     esac
+    handler
+}
+
+clean() {
+    printer -clean "Cleaning all..."
+
+    # Docker Ops
+    docker compose down --volumes --rmi all
     handler
 }
 
@@ -124,12 +132,8 @@ usage() {
     - [${ICON_STOP}] stop
     - [${ICON_SETUP}] debug
     - [${ICON_SETUP}] setup
+    - [${ICON_SETUP}] install <container_name> <pip|npm|yarn|apt> <package>
     - [${ICON_CLEAN}] clean
-
-3. Options:
-    - [${ICON_CLEAN}] clean --env
-    - [${ICON_CLEAN}] clean --docker
-    - [${ICON_CLEAN}] clean --all
 
 EOF
     exit 1
@@ -149,21 +153,17 @@ printer() {
             ICON="$ICON_STOP"
             COLOR="$RED"
             ;;
+        -debug)
+            ICON="$ICON_RUN"
+            COLOR="$CYAN"
+            ;;
         -setup)
             ICON="$ICON_SETUP"
             COLOR="$MAGENTA"
             ;;
-        -run)
-            ICON="$ICON_RUN"
-            COLOR="$CYAN"
-            ;;
-        -auth)
-            ICON="$ICON_AUTH"
-            COLOR="$CYAN"
-            ;;
-        -download)
-            ICON="$ICON_DOWNLOAD"
-            COLOR="$BLUE"
+        -install)
+            ICON="$ICON_SETUP"
+            COLOR="$MAGENTA"
             ;;
         -clean)
             ICON="$ICON_CLEAN"
@@ -207,7 +207,11 @@ case $1 in
         debug
         ;;
     setup)
-        setup
+        setup "$@"
+        ;;
+    install)
+        shift
+        install "$@"
         ;;
     clean)
         shift

@@ -1,8 +1,7 @@
 # Directories
-# IMPLEMENT HERE
+.trash/
 
 # Files
-udse.csv
 .DS_Store
 
 # -------------------------
