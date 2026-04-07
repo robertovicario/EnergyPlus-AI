@@ -9,8 +9,8 @@ import json
 import os
 
 from config.dynamic import dynamic
-from routes import analytics, fallback, templates
-from routes.fallback import error_page
+from routes import analytics, templates
+from routes.templates import error_page
 
 # =========================
 # FastAPI
@@ -18,7 +18,6 @@ from routes.fallback import error_page
 
 app = FastAPI()
 app.include_router(analytics.router)
-app.include_router(fallback.router)
 app.include_router(templates.router)
 
 # -------------------------

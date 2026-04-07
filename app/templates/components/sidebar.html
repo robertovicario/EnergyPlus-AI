@@ -17,7 +17,7 @@
                     <div class="dropdown-header px-2">
                         <span class="d-block text-xs text-muted">Switch Workspace</span>
                     </div>
-                    <a href="{{ config.system.repository.url }}" class="dropdown-item px-2">
+                    <a class="dropdown-item px-2" href="{{ config.system.repository.url }}" target="_blank">
                         <div class="position-relative d-flex align-items-center gap-3">
                             <img src="{{ request.url_for('static', path='img/enerergyplus_ai-light.svg') }}"
                                 class="avatar avatar-xs" alt="energyplus_ai-light.svg"/>
@@ -27,7 +27,7 @@
                             <span class="badge badge-xs bg-success-subtle text-success border border-success-subtle rounded-pill ms-6">Active</span>
                         </div>
                     </a>
-                    <a href="https://energyplus.net" class="dropdown-item px-2">
+                    <a class="dropdown-item px-2" href="https://energyplus.net" target="_blank">
                         <div class="position-relative d-flex align-items-center gap-3">
                             <img src="https://energyplus.net/favicon.ico" class="avatar avatar-xs" alt="energyplus.net/favicon.ico"/>
                             <div>

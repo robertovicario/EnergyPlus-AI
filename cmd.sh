@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PYTHON_VERSION="3.12"
+PYTHON_VERSION="3.9"
 VENV_PATH="venv"
 
 # Icons

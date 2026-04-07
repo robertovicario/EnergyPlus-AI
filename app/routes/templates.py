@@ -4,6 +4,7 @@
 
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
+from http import HTTPStatus
 
 from config.logger import logger, log_request
 
@@ -150,24 +151,32 @@ def support(request: Request):
         }
     )
 
-# @router.get('/maintenance', name='templates:maintenance')
-# async def maintenance(request: Request):
+def error_page(request: Request, error):
 
-#     # Request Logging
-#     log_request(request)
+    # Information
+    err_code = getattr(error, 'status_code', 500)
+    try:
+        err_name = HTTPStatus(err_code).phrase
+        err_desc = HTTPStatus(err_code).description
+    except ValueError:
+        err_name = type(error).__name__
+        err_desc = str(error)
 
-#     # -------------------------
+    # -------------------------
 
-#     template = 'pages/maintenance.html'
-#     logger.debug(f"Rendering template: {template}")
+    template = 'pages/error.html'
+    logger.debug(f"Rendering template: {template}")
 
-#     # -------------------------
+    # -------------------------
 
-#     logger.info(f"[200] {request.url.path}")
-#     return jinja_templates.TemplateResponse(
-#         template,
-#         {
-#             'request': request,
-#             'config': request.state.config
-#         }
-#     )
+    logger.info(f"[200] {request.url.path}")
+    return jinja_templates.TemplateResponse(
+        template,
+        {
+            'request': request,
+            'config': request.state.config,
+            'err_code': err_code,
+            'err_name': err_name,
+            'err_desc': err_desc,
+        },
+    )
