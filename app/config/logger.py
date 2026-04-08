@@ -18,4 +18,4 @@ logger.add('logs/app.log', rotation='5 MB')
 def log_request(request: Request):
     logger.info(f"{'=' * 50}")
     logger.info(f"[{request.method}] {request.url.path}")
-    logger.info(f"{'-' * 50}")
+    logger.info(f"{'=' * 50}")

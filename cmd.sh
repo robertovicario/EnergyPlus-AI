@@ -1,6 +1,9 @@
 #!/bin/bash
 
-PYTHON_VERSION="3"
+set -e
+
+MIN_PY_V=3.9
+MAX_PY_V=3.11
 VENV_PATH="venv"
 
 # Icons
@@ -50,18 +53,51 @@ debug() {
     handler
 }
 
+resolve_python() {
+    for minor in $(seq $(echo $MAX_PY_V | cut -d. -f2) -1 $(echo $MIN_PY_V | cut -d. -f2)); do
+        py="python3.$minor"
+        if command -v "$py" &> /dev/null; then
+            version=$($py -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
+            if "$py" - <<EOF &>/dev/null
+import sys
+v = tuple(map(int, "$version".split(".")))
+min_v = tuple(map(int, "$MIN_PY_V".split(".")))
+max_v = tuple(map(int, "$MAX_PY_V".split(".")))
+exit(not (min_v <= v <= max_v))
+EOF
+            then
+                if "$py" -m venv /tmp/test_venv_$$ &>/dev/null; then
+                    rm -rf /tmp/test_venv_$$
+                    echo "$py"
+                    return 0
+                fi
+            fi
+        fi
+    done
+
+    printer -error "[Environment] No working Python found (${MIN_PY_V}–${MAX_PY_V})"
+    exit 1
+}
+
 setup() {
     printer -setup "Setting up the project..."
 
     # Environment
+    PYTHON_BIN=$(resolve_python)
+    printer -setup "[Environment] Using Python: $PYTHON_BIN"
     if [ -d "${VENV_PATH}" ]; then
         rm -rf ${VENV_PATH}
     fi
 
-    python${PYTHON_VERSION} -m venv ${VENV_PATH}
+    $PYTHON_BIN -m venv ${VENV_PATH}
+    if [ ! -d "${VENV_PATH}" ]; then
+        printer -error "[Environment] Failed to create virtual environment"
+        exit 1
+    fi
+
     source ${VENV_PATH}/bin/activate
-    pip install --upgrade pip
-    pip install -r requirements.txt
+    python -m pip install --upgrade pip
+    python -m pip install -r notebook/requirements.txt
     deactivate
 
     # Docker Ops
@@ -88,23 +124,23 @@ install() {
 
     CONTAINER_ID=$(docker compose ps -q "$SERVICE")
     if [[ -z "$CONTAINER_ID" ]]; then
-        printer -error "Container for is not running"
+        printer -error "[Docker] Container $SERVICE is not running"
         exit 1
     fi
 
     # Docker Ops
     case "$MANAGER" in
         pip)
-            docker compose exec "$CONTAINER" pip install $PACKAGE
+            docker compose exec "$SERVICE" pip install $PACKAGE
             ;;
         npm)
-            docker compose exec "$CONTAINER" npm install $PACKAGE
+            docker compose exec "$SERVICE" npm install $PACKAGE
             ;;
         yarn)
-            docker compose exec "$CONTAINER" yarn add $PACKAGE
+            docker compose exec "$SERVICE" yarn add $PACKAGE
             ;;
         apt)
-            docker compose exec "$CONTAINER" apt update && apt install -y $PACKAGE
+            docker compose exec "$SERVICE" apt update && apt install -y $PACKAGE
             ;;
         *)
             usage
@@ -115,6 +151,11 @@ install() {
 
 clean() {
     printer -clean "Cleaning all..."
+
+    # Environment
+    if [ -d "${VENV_PATH}" ]; then
+        rm -rf ${VENV_PATH}
+    fi
 
     # Docker Ops
     docker compose down --volumes --rmi all

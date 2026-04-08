@@ -15,7 +15,7 @@ from api import analytics as this_api
 from config.logger import logger, log_request
 
 # =========================
-# Configuration
+# Configurations
 # =========================
 
 # Paths

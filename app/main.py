@@ -13,7 +13,7 @@ from routes import analytics, templates
 from routes.templates import error_page
 
 # =========================
-# Configuration
+# Configurations
 # =========================
 
 config_path = os.path.join(
@@ -49,7 +49,7 @@ app.mount(
 )
 
 # =========================
-# Configuration
+# Configurations
 # =========================
 
 @app.middleware('http')
