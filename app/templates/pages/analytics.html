@@ -205,12 +205,20 @@
         }
     });
 
-    document.getElementById('input-inference').addEventListener('change', async function() {
-        const file = this.files[0];
-        if (!file) return;
+    async function inference(get_started = false) {
 
+        // Form Data
         const form_data = new FormData();
-        form_data.append('file', file);
+        if (get_started) {
+            form_data.append('file', new Blob(), '-1');
+        } else {
+            const file = this.files[0];
+            if (!file) return;
+            form_data.append('file', file);
+        }
+
+        // Modal Processing
+        window.modal_processing.show();
 
         try {
             const response = await fetch(window.APP_URL.upload, {
@@ -220,12 +228,17 @@
             const data = await response.json();
 
             if (response.ok) {
+
+                // Init Frontend
                 init_widgets(data.widgets);
                 init_plot(document.getElementById('rendering'), data.rendering);
                 enable_tabs();
 
-                const tabTrigger = new bootstrap.Tab(document.querySelector('#nav-tab-2 .nav-link'));
-                tabTrigger.show();
+                // Tab Trigger
+                const tab_trigger = new bootstrap.Tab(
+                    document.querySelector('#nav-tab-2 .nav-link')
+                );
+                tab_trigger.show();
             } else {
                 console.error(data.error);
                 alert(data.error);
@@ -233,7 +246,17 @@
         } catch (error) {
             console.error(error);
             alert(error);
+        } finally {
+            window.modal_processing.hide();
         }
+    }
+
+    document.getElementById('input-inference').addEventListener('change', async function() {
+        await inference.call(this, false);
+    });
+
+    document.getElementById('btn-get-started').addEventListener('click', async function () {
+        await inference.call(this, true);
     });
 
     document.getElementById('btn-export-rendering').addEventListener('click', function() {

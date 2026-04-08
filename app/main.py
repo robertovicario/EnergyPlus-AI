@@ -13,10 +13,28 @@ from routes import analytics, templates
 from routes.templates import error_page
 
 # =========================
+# Configuration
+# =========================
+
+config_path = os.path.join(
+    os.path.dirname(__file__), 'config', 'static.json'
+)
+with open(config_path) as f:
+    static = json.load(f)
+config = {
+    **static,
+    **dynamic
+}
+
+# =========================
 # FastAPI
 # =========================
 
-app = FastAPI()
+app = FastAPI(
+    title=config['system']['name'],
+    description=config['system']['description'],
+    version=config['system']['version']
+)
 app.include_router(analytics.router)
 app.include_router(templates.router)
 
@@ -31,18 +49,8 @@ app.mount(
 )
 
 # =========================
-# Configurations
+# Configuration
 # =========================
-
-config_path = os.path.join(
-    os.path.dirname(__file__), 'config', 'static.json'
-)
-with open(config_path) as f:
-    static = json.load(f)
-config = {
-    **static,
-    **dynamic
-}
 
 @app.middleware('http')
 async def add_config_to_request(request: Request, call_next):

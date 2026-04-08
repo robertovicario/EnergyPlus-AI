@@ -3,6 +3,7 @@
 # =========================
 
 from fastapi import APIRouter, Request
+from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from http import HTTPStatus
 
@@ -93,19 +94,8 @@ def documentation(request: Request):
 
     # -------------------------
 
-    template = 'pages/documentation.html'
-    logger.debug(f"Rendering template: {template}")
-
-    # -------------------------
-
     logger.info(f"[200] {request.url.path}")
-    return jinja_templates.TemplateResponse(
-        template,
-        {
-            'request': request,
-            'config': request.state.config
-        }
-    )
+    return RedirectResponse(url='/docs')
 
 @router.get('/changelog', name='templates:changelog')
 def changelog(request: Request):

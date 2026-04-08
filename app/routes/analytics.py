@@ -15,15 +15,18 @@ from api import analytics as this_api
 from config.logger import logger, log_request
 
 # =========================
-# Configurations
+# Configuration
 # =========================
+
+# Paths
+DATA_PATH = os.path.join(os.path.dirname(__file__), '..', 'data')
 
 # FastAPI
 router = APIRouter(prefix='/analytics', tags=['analytics'])
 
 # EnergyPlus API
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-IDD_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', 'data', 'config'))
+IDD_PATH = os.path.abspath(os.path.join(DATA_PATH, 'config'))
 IDD_FILE = os.path.join(IDD_PATH, 'Energy+.idd')
 
 # Progress Tracking
@@ -33,9 +36,9 @@ PROGRESS = {}
 # Endpoints
 # =========================
 
-@router.get('/upload/progress/{job_id}')
-async def get_progress(job_id: str):
-    return {'progress': PROGRESS.get(job_id, 0)}
+# @router.get('/upload/progress/{job_id}')
+# async def get_progress(job_id: str):
+#     return {'progress': PROGRESS.get(job_id, 0)}
 
 @router.post('/upload', name='analytics:upload')
 async def upload(
@@ -54,11 +57,20 @@ async def upload(
 
     try:
         with tempfile.TemporaryDirectory() as tmpdir:
+            if file.filename == '-1':
 
-            # ZIP
-            zip_path = os.path.join(tmpdir, file.filename)
-            with open(zip_path, 'wb') as f:
-                f.write(await file.read())
+                # ZIP
+                template_path = os.path.join(DATA_PATH, 'templates', 'template-1.zip')
+                zip_path = os.path.join(tmpdir, 'template-1.zip')
+
+                with open(template_path, 'rb') as src, open(zip_path, 'wb') as dst:
+                    dst.write(src.read())
+            else:
+
+                # ZIP
+                zip_path = os.path.join(tmpdir, file.filename)
+                with open(zip_path, 'wb') as f:
+                    f.write(await file.read())
 
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
                 zip_ref.extractall(tmpdir)

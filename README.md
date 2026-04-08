@@ -71,21 +71,10 @@ bash cmd.sh stop
 
 ### `clean`
 
-If you want to clean the project, you can run this command using few options:
+If you want to clean the project, you can run:
 
 ```sh
-# Cleaning the environment
-bash cmd.sh clean --env
-```
-
-```sh
-# Cleaning the Docker resources
-bash cmd.sh clean --docker
-```
-
-```sh
-# Cleaning all the resources
-bash cmd.sh clean --all
+bash cmd.sh clean 
 ```
 
 ## License

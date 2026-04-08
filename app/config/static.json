@@ -2,7 +2,7 @@
     "system": {
         "lang": "en",
         "name": "EnergyPlus AI",
-        "port": 8000,
+        "description": "Leverage predictive analytics to estimate building energy consumption and transform model outputs into interpretable insights.",
         "version": "1.0.0",
         "repository": {
             "server": "github.com",
@@ -14,9 +14,5 @@
     "ui": {
         "theme": "light",
         "primary": "#4DAA57"
-    },
-    "ux": {
-        "flash_timeout": 5000,
-        "waiting_time": 2
     }
 }
