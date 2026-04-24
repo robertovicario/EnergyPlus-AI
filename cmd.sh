@@ -30,7 +30,7 @@ YELLOW="\033[33m"
 start() {
     printer -start "Starting the project..."
 
-    # Docker Ops
+    # Docker
     docker compose start
     handler
 }
@@ -38,7 +38,7 @@ start() {
 stop() {
     printer -stop "Stopping the project..."
 
-    # Docker Ops
+    # Docker
     docker compose stop
     handler
 }
@@ -46,7 +46,7 @@ stop() {
 debug() {
     printer -setup "Starting debug..."
 
-    # Docker Ops
+    # Docker
     docker builder prune -f
     docker compose down --volumes
     docker compose up -d --build
@@ -80,37 +80,46 @@ EOF
 }
 
 setup() {
-    printer -setup "Setting up the project..."
+
+    # Options
+    TARGET="${2:--all}"
 
     # Environment
-    PYTHON_BIN=$(resolve_python)
-    printer -setup "[Environment] Using Python: $PYTHON_BIN"
-    if [ -d "${VENV_PATH}" ]; then
-        rm -rf ${VENV_PATH}
+    if [[ "$TARGET" == "--env" || "$TARGET" == "--all" ]]; then
+        printer -setup "Setting up the environment..."
+
+        PYTHON_BIN=$(resolve_python)
+        printer -setup "[Environment] Python: $PYTHON_BIN"
+
+        if [ -d "${VENV_PATH}" ]; then
+            rm -rf ${VENV_PATH}
+        fi
+
+        $PYTHON_BIN -m venv ${VENV_PATH}
+        if [ ! -d "${VENV_PATH}" ]; then
+            printer -error "[Environment] Failed to create virtual environment"
+            exit 1
+        fi
+
+        source ${VENV_PATH}/bin/activate
+        python -m pip install --upgrade pip
+        python -m pip install -r notebook/requirements.txt
+        deactivate
     fi
 
-    $PYTHON_BIN -m venv ${VENV_PATH}
-    if [ ! -d "${VENV_PATH}" ]; then
-        printer -error "[Environment] Failed to create virtual environment"
-        exit 1
+    # Docker
+    if [[ "$TARGET" == "--docker" || "$TARGET" == "--all" ]]; then
+        printer -setup "Setting up Docker resources..."
+        docker compose down --volumes --rmi all
+        docker builder prune -f
+        docker compose up -d --build
     fi
-
-    source ${VENV_PATH}/bin/activate
-    python -m pip install --upgrade pip
-    python -m pip install -r notebook/requirements.txt
-    deactivate
-
-    # Docker Ops
-    docker compose down --volumes --rmi all
-    docker builder prune -f
-    docker compose up -d --build
     handler
 }
 
 install() {
     printer -install "Installing dependencies..."
 
-    # Validation
     if [[ "$#" -lt 3 ]]; then
         usage
         exit 1
@@ -128,7 +137,7 @@ install() {
         exit 1
     fi
 
-    # Docker Ops
+    # Docker
     case "$MANAGER" in
         pip)
             docker compose exec "$SERVICE" pip install $PACKAGE
@@ -150,15 +159,21 @@ install() {
 }
 
 clean() {
-    printer -clean "Cleaning all..."
+
+    # Options
+    TARGET="${2:--all}"
 
     # Environment
-    if [ -d "${VENV_PATH}" ]; then
+    if [[ "$TARGET" == "--env" || "$TARGET" == "--all" ]]; then
+        printer -clean "Cleaning the environment..."
         rm -rf ${VENV_PATH}
     fi
 
-    # Docker Ops
-    docker compose down --volumes --rmi all
+    # Docker
+    if [[ "$TARGET" == "--docker" || "$TARGET" == "--all" ]]; then
+        printer -clean "Cleaning Docker resources..."
+        docker compose down --volumes --rmi all
+    fi
     handler
 }
 
@@ -172,9 +187,9 @@ usage() {
     - [${ICON_START}] start
     - [${ICON_STOP}] stop
     - [${ICON_SETUP}] debug
-    - [${ICON_SETUP}] setup
+    - [${ICON_SETUP}] setup --[env|docker]
     - [${ICON_SETUP}] install <container_name> <pip|npm|yarn|apt> <package>
-    - [${ICON_CLEAN}] clean
+    - [${ICON_CLEAN}] clean --[env|docker]
 
 EOF
     exit 1

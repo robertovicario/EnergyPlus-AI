@@ -10,6 +10,7 @@ numpy
 pandas
 plotly
 python-multipart
+optuna
 scikit-learn
 shap
 ydata-profiling

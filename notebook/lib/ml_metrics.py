@@ -8,6 +8,7 @@ from sklearn.metrics import (
     mean_absolute_error, root_mean_squared_error, r2_score
 )
 from typing import Literal
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -26,7 +27,7 @@ def compute_metrics_clf(
     prec = precision_score(y_true, y_pred, zero_division=0)
     rec = recall_score(y_true, y_pred, zero_division=0)
     f1 = f1_score(y_true, y_pred, zero_division=0)
-    metrics_out[set] = [len(y_true), acc, prec, rec, f1]
+    metrics_out[set] = [int(len(y_true)), acc, prec, rec, f1]
 
 def compute_metrics_reg(
     metrics_out: dict,
@@ -38,7 +39,7 @@ def compute_metrics_reg(
 	mae = mean_absolute_error(y_true, y_pred)
 	rmse = root_mean_squared_error(y_true, y_pred)
 	r2 = r2_score(y_true, y_pred)
-	metrics_out[set] = [len(y_true), mae, rmse, r2]
+	metrics_out[set] = [int(len(y_true)), mae, rmse, r2]
 
 	# -------------------------
 
@@ -68,14 +69,17 @@ def out_cm(
 	y_pred: np.ndarray,
 	model_classes: list,
 	display_labels: list
-) -> ConfusionMatrixDisplay:
+) -> None:
 
-    # %matplotlib inline
-	# Remember to use this magic command to display the plot
-    return ConfusionMatrixDisplay(
-        confusion_matrix=confusion_matrix(
-            y_true, y_pred,
-            labels=model_classes
-        ),
+    # Confusion Matrix
+    cm = confusion_matrix(
+		y_true, y_pred,
+		labels=model_classes
+	)
+    display = ConfusionMatrixDisplay(
+        confusion_matrix=cm,
         display_labels=display_labels
-    ).plot(cmap='Blues')
+    )
+    display.plot(cmap='Blues', values_format='d')
+    plt.title('Confusion Matrix')
+    plt.show()
