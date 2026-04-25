@@ -1,16 +1,9 @@
-eppy
 fastparquet
 ipykernel
 ipywidgets
 jupyter
-ladybug-core
 loguru
 matplotlib
 numpy
 pandas
-plotly
-python-multipart
-optuna
 scikit-learn
-shap
-ydata-profiling
