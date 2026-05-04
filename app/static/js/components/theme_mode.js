@@ -4,36 +4,40 @@
  */
 /////////////////////////
 
-document.addEventListener('DOMContentLoaded', () => {
-    const btn_theme_mode = document.querySelector('#btn_theme_mode');
-    if (!btn_theme_mode) return;
+document.addEventListener('DOMContentLoaded', function() {
+    const html = document.documentElement;
+    const btn_light = document.querySelector('#option1');
+    const btn_dark = document.querySelector('#option2');
+    const saved_theme = localStorage.getItem('theme');
 
-    const icon = btn_theme_mode.querySelector('i');
-    const span = btn_theme_mode.querySelector('span');
+    // Saved Theme
+    if (saved_theme) {
+        const prefers_dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = prefers_dark ? 'dark' : 'light';
+        html.setAttribute('data-bs-theme', theme);
+        html.setAttribute('data-bs-theme', saved_theme);
 
-    function update_button(theme) {
-        icon.className = theme === 'dark'
-            ? 'bi bi-sun-fill fs-5'
-            : 'bi bi-moon-stars-fill fs-5';
-        if (span) span.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+        if (saved_theme === 'dark') {
+            btn_dark.checked = true;
+        } else {
+            btn_light.checked = true;
+        }
     }
 
-    // -------------------------
+    // Light Mode
+    btn_light?.addEventListener('change', function() {
+        if (this.checked) {
+            html.setAttribute('data-bs-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+    });
 
-    const el = document.documentElement;
-    const saved_theme = localStorage.getItem('theme') || 'light';
-
-    el.setAttribute('data-bs-theme', saved_theme);
-    update_button(saved_theme);
-
-    btn_theme_mode.addEventListener('click', (e) => {
-        e.preventDefault();
-        let current_theme = el.getAttribute('data-bs-theme');
-        let new_theme = current_theme === 'dark' ? 'light' : 'dark';
-
-        el.setAttribute('data-bs-theme', new_theme);
-        localStorage.setItem('theme', new_theme);
-        update_button(new_theme);
+    // Dark Mode
+    btn_dark?.addEventListener('change', function() {
+        if (this.checked) {
+            html.setAttribute('data-bs-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        }
     });
 });
 

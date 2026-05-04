@@ -20,26 +20,30 @@ def compute_metrics_clf(
     metrics_out: dict,
     y_true: np.ndarray,
     y_pred: np.ndarray,
-    set: str = 'TEST'
+    set: str = 'test'
 ) -> None:
 
     acc = accuracy_score(y_true, y_pred)
     prec = precision_score(y_true, y_pred, zero_division=0)
     rec = recall_score(y_true, y_pred, zero_division=0)
     f1 = f1_score(y_true, y_pred, zero_division=0)
-    metrics_out[set] = [int(len(y_true)), acc, prec, rec, f1]
+    metrics_out[set] = [
+        int(len(y_true)), float(acc), float(prec), float(rec), float(f1)
+    ]
 
 def compute_metrics_reg(
     metrics_out: dict,
     y_true: np.ndarray,
     y_pred: np.ndarray,
-    set: str = 'TEST'
+    set: str = 'test'
 ) -> None:
 
 	mae = mean_absolute_error(y_true, y_pred)
 	rmse = root_mean_squared_error(y_true, y_pred)
 	r2 = r2_score(y_true, y_pred)
-	metrics_out[set] = [int(len(y_true)), mae, rmse, r2]
+	metrics_out[set] = [
+        int(len(y_true)), float(mae), float(rmse), float(r2)
+    ]
 
 	# -------------------------
 

@@ -1,0 +1,203 @@
+<!-- Jinja :: Template -->
+{% extends 'base-2.html' %}
+
+<!-- Jinja :: Theme -->
+{% set theme_title = 'Model Overview' %}
+
+<!-- Jinja :: Macros -->
+{% from 'components/badge.html' import badge %}
+{% from 'components/breadcrumb.html' import breadcrumb %}
+{% from 'components/info.html' import info %}
+{% from 'components/widget.html' import widget %}
+
+<!-- Jinja :: Content -->
+{% block content %}
+<div class="flex-lg-fill overflow-x-auto vstack vh-100">
+    <div class="flex-fill overflow-y-lg-auto mt-lg-2 scrollbar bg-body rounded-top-start border-top-lg border-start-lg shadow-lg-2" data-x-inject="page">
+
+        <!-- Jinja :: Breadcrumb -->
+        {% set items = [
+            { 'label': 'Artificial Intelligence', 'url': '#' },
+            { 'label': 'Model', 'url': '#' },
+            { 'label': 'Overview', 'url': '#' }
+        ] %}
+        {{ breadcrumb(items) }}
+
+        <!-- Page -->
+        <div data-x-inject="page">
+            <main class="py-6">
+                <div class="container-xl d-flex flex-column gap-6" data-x-inject="page">
+
+                    <!-- Architecture -->
+                    <div class="row g-base">
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex gap-1 align-items-center">
+                                            <div>
+                                                <h5>Architecture</h5>
+                                                <p class="text-body-secondary text-sm">Structure of the model and key information</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-center align-items-center w-100">
+
+                                        <!-- Model Architecture -->
+                                        {{ model_html | safe }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Information -->
+                    <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-2 g-base">
+                        <div class="col-12 col-xl-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5>Information</h5>
+                                    <p class="text-sm text-body-secondary">General configuration of the model</p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex flex-column gap-3 text-sm">
+                                        {% for key, value in model_metadata.config.info.items() %}
+                                        <div class="d-flex justify-content-between">
+                                            <span>{{ key.capitalize() }}</span>
+                                            <span class="fw-semibold">{{ value }}</span>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5>Hyperparameters</h5>
+                                    <p class="text-sm text-body-secondary">Model training configuration</p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex flex-column gap-3 text-sm">
+                                        {% for key, value in model_metadata.hyperparameters.items() %}
+                                        <div class="d-flex justify-content-between">
+                                            <span>{{ key }}</span>
+                                            <span class="fw-semibold">{{ value | round(4) }}</span>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Storage -->
+                    <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-1 g-base">
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex gap-1 align-items-center">
+                                            <div>
+                                                <h5>Storage</h5>
+                                                <p class="text-body-secondary text-sm">Models deployed and experiments in progress</p>
+                                            </div>
+                                        </div>
+                                        <div class="ms-4 cursor-pointer" data-bs-toggle="modal" data-bs-target="#info-storage">
+                                            <i class="bi bi-info-circle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body py-0">
+                                    <div class="list-group list-group-flush">
+                                    {% for model in model_registry.values() %}
+
+                                        <!-- Jinja :: Theme -->
+                                        {% if model.stage == 'active' %}
+                                            {% set theme = 'success' %}
+                                        {% elif model.stage == 'experiment' %}
+                                            {% set theme = 'secondary' %}
+                                        {% else %}
+                                            {% set theme = 'warning' %}
+                                        {% endif %}
+
+                                        <!-- Item -->
+                                        <div class="list-group-item d-flex align-items-center justify-content-between gap-6 cursor-pointer" data-bs-toggle="modal" data-bs-target="#info-performance-{{ loop.index }}">
+
+                                            <!-- Model -->
+                                            <div class="d-flex align-items-center gap-3 w-auto">
+                                                <div class="icon icon-shape icon-sm flex-none w-rem-10 h-rem-10 bg-{{ theme }}-subtle text-{{ theme }}-emphasis border border-{{ theme }}-subtle rounded shadow-soft-2">
+                                                    <i class="bi bi-{{ 'box' if model.stage != 'experiment' else 'flask' }}"></i>
+                                                </div>
+                                                <div>
+                                                    <span class="d-block text-heading text-sm fw-semibold">{{ model.config.info.name if model.stage != 'experiment' else model.id }}</span>
+                                                    <span class="d-sm-block text-muted text-xs">{{ model.timestamp }}</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Version -->
+                                            <div class="d-none d-md-block w-rem-24 text-sm text-center">
+                                                {{ ('Version: ' ~ model.config.info.version) if model.stage != 'experiment' else 'Experimental' }}
+                                            </div>
+
+                                            <!-- Stage -->
+                                            <div class="d-none d-md-block w-rem-24 text-center">
+
+                                                <!-- Jinja :: Badge -->
+                                                {{ badge(model.stage, theme) }}
+                                            </div>
+
+                                            <!-- Metrics -->
+                                            <div class="d-none d-md-block w-rem-64 text-sm text-center">
+
+                                                <!-- Jinja :: Badges -->
+                                                {{ badge('MAE: ' ~ model.metadata.metrics.regression.test.mae | round(2), 'light') }} {{ badge('RMSE: ' ~ model.metadata.metrics.regression.test.rmse | round(2), 'light') }} {{ badge('R²: ' ~ model.metadata.metrics.regression.test.r2 | round(2), 'light') }}
+                                            </div>
+
+                                            <!-- Dataset -->
+                                            <div class="d-flex flex-column w-auto text-end">
+                                                <span class="d-block text-heading text-sm fw-bold">{{ model.config.info.dataset }}</span>
+                                                <span class="d-block text-muted text-xs">Shape: ({{ model.config.training.df_rows }}, {{ model.config.training.df_columns }})</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Jinja :: Info -->
+                                        {{ info(
+                                            'info-performance-' ~ loop.index,
+                                            model.config.info.name if model.stage != 'experiment' else model.id, model.timestamp,
+                                            [
+                                                '&bull; <strong>Version:</strong> ' ~ (model.config.info.version if model.stage != 'experiment' else 'Experimental'),
+                                                '&bull; <strong>Stage:</strong> ' ~ model.stage,
+                                                '&bull; <strong>Mean Absolute Error (MAE):</strong> ' ~ (model.metadata.metrics.regression.test.mae | round(2)),
+                                                '&bull; <strong>Root Mean Square Error (RMSE):</strong> ' ~ (model.metadata.metrics.regression.test.rmse | round(2)),
+                                                '&bull; <strong>R<sup>2</sup>:</strong> ' ~ (model.metadata.metrics.regression.test.r2 | round(2))
+                                            ],
+                                            'bi-box' if model.stage != 'experiment' else 'bi-flask', theme
+                                        ) }}
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<!-- Jinja :: Info -->
+{{ info(
+    'info-storage',
+    'Storage', 'Centralized store for the full model lifecycle',
+    ['...'],
+    'bi-info-circle', 'light'
+) }}
+{% endblock %}
+
+<!-- Jinja :: Scripts -->
+{% block scripts %}
+<script src="{{ url_for('static', path='js/pages/model_overview.js') }}"></script>
+{% endblock %}

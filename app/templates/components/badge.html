@@ -1,0 +1,3 @@
+{% macro badge(text, theme, id=None) %}
+<span id="{{ id }}" class="badge bg-{{ theme }}-subtle text-{{ theme }}-emphasis border border-{{ theme }}-subtle rounded-pill">{{ text }}</span>
+{% endmacro %}

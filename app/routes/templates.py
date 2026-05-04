@@ -7,6 +7,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from http import HTTPStatus
 
+from api import model as model_api
 from config.logger import logger, log_request
 
 # =========================
@@ -28,6 +29,7 @@ def home(request: Request):
 
     # -------------------------
 
+    # Template
     template = 'pages/home.html'
     logger.debug(f"Rendering template: {template}")
 
@@ -38,7 +40,30 @@ def home(request: Request):
         template,
         {
             'request': request,
-            'config': request.state.config
+            'config': request.app.state.CONFIG
+        }
+    )
+
+@router.get('/analytics/templates', name='templates:analytics_templates')
+def analytics_templates(request: Request):
+
+    # Request Logging
+    log_request(request)
+
+    # -------------------------
+
+    # Template
+    template = 'pages/analytics-templates.html'
+    logger.debug(f"Rendering template: {template}")
+
+    # -------------------------
+
+    logger.info(f"[200] {request.url.path}")
+    return jinja_templates.TemplateResponse(
+        template,
+        {
+            'request': request,
+            'config': request.app.state.CONFIG
         }
     )
 
@@ -50,6 +75,7 @@ def analytics(request: Request):
 
     # -------------------------
 
+    # Template
     template = 'pages/analytics.html'
     logger.debug(f"Rendering template: {template}")
 
@@ -60,19 +86,20 @@ def analytics(request: Request):
         template,
         {
             'request': request,
-            'config': request.state.config
+            'config': request.app.state.CONFIG
         }
     )
 
-@router.get('/templates', name='templates:templates')
-def templates(request: Request):
+@router.get('/ai/model/overview', name='templates:model_overview')
+def model_overview(request: Request):
 
     # Request Logging
     log_request(request)
 
     # -------------------------
 
-    template = 'pages/templates.html'
+    # Template
+    template = 'pages/model-overview.html'
     logger.debug(f"Rendering template: {template}")
 
     # -------------------------
@@ -82,11 +109,54 @@ def templates(request: Request):
         template,
         {
             'request': request,
-            'config': request.state.config
+            'config': request.app.state.CONFIG,
+            'model_html': request.app.state.model_html,
+            'model_metadata': request.app.state.model_metadata,
+            'model_registry': request.app.state.model_registry
         }
     )
 
-@router.get('/documentation', name='templates:documentation')
+@router.get('/ai/model/performance', name='templates:model_performance')
+def model_performance(request: Request):
+
+    # Request Logging
+    log_request(request)
+
+    # -------------------------
+
+    # Template
+    template = 'pages/model-performance.html'
+    logger.debug(f"Rendering template: {template}")
+
+    # -------------------------
+
+    # Badges
+    badges = model_api.get_badges(
+        request.app.state.model_metadata
+    )
+
+    # Plot EUI Distribution
+    plot_eui_dist = model_api.get_plot_eui_dist(request)
+
+    # Plot Heatmap
+    plot_heatmap = model_api.get_plot_heatmap(request)
+
+    # -------------------------
+
+    logger.info(f"[200] {request.url.path}")
+    return jinja_templates.TemplateResponse(
+        template,
+        {
+            'request': request,
+            'config': request.app.state.CONFIG,
+            'model_metadata': request.app.state.model_metadata,
+            'badges': badges,
+            'plot_eui_dist': plot_eui_dist,
+            'plot_heatmap': plot_heatmap,
+        }
+    )
+
+@router.get('/resources/documentation', name='templates:documentation')
 def documentation(request: Request):
 
     # Request Logging
@@ -95,9 +165,20 @@ def documentation(request: Request):
     # -------------------------
 
     logger.info(f"[200] {request.url.path}")
-    return RedirectResponse(url='/docs')
+    return RedirectResponse(url='https://docs.robertovicario.com/energyplus-ai')
 
-@router.get('/changelog', name='templates:changelog')
+@router.get('/resources/api-reference', name='templates:api_reference')
+def api_reference(request: Request):
+
+    # Request Logging
+    log_request(request)
+
+    # -------------------------
+
+    logger.info(f"[200] {request.url.path}")
+    return RedirectResponse(url='https://docs.robertovicario.com/energyplus-ai/api-reference')
+
+@router.get('/resources/changelog', name='templates:changelog')
 def changelog(request: Request):
 
     # Request Logging
@@ -105,41 +186,8 @@ def changelog(request: Request):
 
     # -------------------------
 
-    template = 'pages/changelog.html'
-    logger.debug(f"Rendering template: {template}")
-
-    # -------------------------
-
     logger.info(f"[200] {request.url.path}")
-    return jinja_templates.TemplateResponse(
-        template,
-        {
-            'request': request,
-            'config': request.state.config
-        }
-    )
-
-@router.get('/support', name='templates:support')
-def support(request: Request):
-
-    # Request Logging
-    log_request(request)
-
-    # -------------------------
-
-    template = 'pages/support.html'
-    logger.debug(f"Rendering template: {template}")
-
-    # -------------------------
-
-    logger.info(f"[200] {request.url.path}")
-    return jinja_templates.TemplateResponse(
-        template,
-        {
-            'request': request,
-            'config': request.state.config
-        }
-    )
+    return RedirectResponse(url='https://docs.robertovicario.com/energyplus-ai/changelog')
 
 def error_page(request: Request, error):
 
@@ -154,6 +202,7 @@ def error_page(request: Request, error):
 
     # -------------------------
 
+    # Template
     template = 'pages/error.html'
     logger.debug(f"Rendering template: {template}")
 
@@ -164,7 +213,7 @@ def error_page(request: Request, error):
         template,
         {
             'request': request,
-            'config': request.state.config,
+            'config': request.app.state.CONFIG,
             'err_code': err_code,
             'err_name': err_name,
             'err_desc': err_desc,

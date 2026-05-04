@@ -1,13 +1,13 @@
 <nav class="navbar navbar-expand-lg px-0 px-lg-3">
     <div class="container-fluid">
-        <a class="d-none d-lg-inline-block navbar-brand" href="{{ request.url_for('templates:home') }}">
+        <a class="navbar-brand" href="{{ request.url_for('templates:home') }}">
             <img src="{{ request.url_for('static', path='img/enerergyplus_ai-dark.svg') }}" class="img-dark h-rem-7" alt="enerergyplus_ai-dark"/>
             <img src="{{ request.url_for('static', path='img/enerergyplus_ai-light.svg') }}" class="img-light h-rem-7" alt="enerergyplus_ai-light"/>
         </a>
         <div class="navbar-nav align-items-center ms-auto order-lg-last">
-            <a class="btn btn-white border d-inline-flex align-items-center gap-3" href="{{ config.system.repository.url }}" target="_blank">
+            <a class="btn btn-neutral border d-inline-flex align-items-center gap-3" href="{{ config.system.repository.url }}" target="_blank">
                 <span class="icon icon-sm">
-                    <img src="https://assets.webpixels.io/img/social/github.svg" class="w-rem-5 h-rem-5" alt="GitHub"/>
+                    <i class="bi bi-github text-neutral"></i>
                 </span>
                 Learn More
             </a>

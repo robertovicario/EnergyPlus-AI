@@ -1,10 +1,14 @@
 eppy
 fastapi
+fastparquet
+joblib
 ladybug-core
 loguru
 matplotlib
 numpy
 pandas
 plotly
+pyyaml
 python-multipart
+scikit-learn
 uvicorn

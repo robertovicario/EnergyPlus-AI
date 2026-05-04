@@ -9,11 +9,15 @@
             <ol class="d-flex justify-content-center align-items-center breadcrumb">
                 {% for item in items %}
                     {% if loop.last %}
-                        <li class="breadcrumb-item active">{{ item.label }}</li>
+                    <li class="breadcrumb-item active">{{ item.label }}</li>
                     {% else %}
+                        {% if item.url == '#' %}
+                        <li class="breadcrumb-item active">{{ item.label }}</li>
+                        {% else %}
                         <li class="breadcrumb-item">
                             <a href="{{ item.url }}" class="text-body-secondary text-body-hover">{{ item.label }}</a>
                         </li>
+                        {% endif %}
                         <i class="bi bi-chevron-right mx-2 text-body-secondary text-xs"></i>
                     {% endif %}
                 {% endfor %}

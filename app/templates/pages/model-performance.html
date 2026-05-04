@@ -1,0 +1,160 @@
+<!-- Jinja :: Template -->
+{% extends 'base-2.html' %}
+
+<!-- Jinja :: Theme -->
+{% set theme_title = 'Model Performance' %}
+
+<!-- Jinja :: Macros -->
+{% from 'components/breadcrumb.html' import breadcrumb %}
+{% from 'components/info.html' import info %}
+{% from 'components/widget.html' import widget %}
+
+<!-- Jinja :: Content -->
+{% block content %}
+<div class="flex-lg-fill overflow-x-auto vstack vh-100">
+    <div class="flex-fill overflow-y-lg-auto mt-lg-2 scrollbar bg-body rounded-top-start border-top-lg border-start-lg shadow-lg-2" data-x-inject="page">
+
+        <!-- Jinja :: Breadcrumb -->
+        {% set items = [
+            { 'label': 'Artificial Intelligence', 'url': '#' },
+            { 'label': 'Model', 'url': '#' },
+            { 'label': 'Performance', 'url': '#' }
+        ] %}
+        {{ breadcrumb(items) }}
+
+        <!-- Page -->
+        <div data-x-inject="page">
+            <main class="py-6">
+                <div class="container-xl d-flex flex-column gap-6" data-x-inject="page">
+
+                    <!-- Performance Metrics -->
+                    <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-3 g-base">
+
+                        <!-- Jinja :: Widgets -->
+                        {{ widget('w-mae', 'MAE', 'secondary', 'bi-activity', model_metadata.metrics.regression.test.mae | round(2), 'mae', badges['mae']) }}
+                        {{ widget('w-rmse', 'RMSE', 'warning', 'bi-speedometer', model_metadata.metrics.regression.test.rmse | round(2), 'rmse', badges['rmse']) }}
+                        {{ widget('w-r2', 'R<sup>2</sup>', 'success', 'bi-graph-up', model_metadata.metrics.regression.test.r2 | round(2), 'r2', badges['r2']) }}
+                    </div>
+
+                    <!-- Descriptive Statistics (1) -->
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-base">
+
+                        <!-- Jinja :: Widgets -->
+                        {{ widget('w-mean', 'Mean', 'light', 'bi-distribute-horizontal', model_metadata.metrics.descriptive.mean | round(2)) }}
+                        {{ widget('w-q1', 'Quartile 1', 'light', 'bi-align-start', model_metadata.metrics.descriptive.q1 | round(2)) }}
+                        {{ widget('w-median', 'Median', 'light', 'bi-align-center', model_metadata.metrics.descriptive.median | round(2)) }}
+                        {{ widget('w-q3', 'Quartile 3', 'light', 'bi-align-end', model_metadata.metrics.descriptive.q3 | round(2)) }}
+                    </div>
+
+                    <!-- Descriptive Statistics (2) -->
+                    <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-3 g-base">
+
+                        <!-- Jinja :: Widgets -->
+                        {{ widget('w-std', 'Standard Deviation', 'light', 'bi-arrows-expand-vertical', model_metadata.metrics.descriptive.std | round(2)) }}
+                        {{ widget('w-min', 'MIN', 'light', 'bi-arrow-down', model_metadata.metrics.descriptive.min | round(2)) }}
+                        {{ widget('w-max', 'MAX', 'light', 'bi-arrow-up', model_metadata.metrics.descriptive.max | round(2)) }}
+                    </div>
+
+                    <!-- Plots -->
+                    <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-2 g-base">
+
+                        <!-- EUI Distribution -->
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex gap-1 align-items-center">
+                                            <div>
+                                                <h5>EUI Distribution</h5>
+                                                <p class="text-body-secondary text-sm">Indicates the distribution of the EUI across the dataset</p>
+                                            </div>
+                                        </div>
+                                        <div class="ms-4 cursor-pointer" data-bs-toggle="modal" data-bs-target="#info-eui-dist">
+                                            <i class="bi bi-info-circle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <!-- Jinja :: Plot EUI Distribution -->
+                                    {{ plot_eui_dist | safe }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Correlations -->
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex gap-1 align-items-center">
+                                            <div>
+                                                <h5>Correlations</h5>
+                                                <p class="text-body-secondary text-sm">Shows relationship between numerical variables</p>
+                                            </div>
+                                        </div>
+                                        <div class="ms-4 cursor-pointer" data-bs-toggle="modal" data-bs-target="#info-corr">
+                                            <i class="bi bi-info-circle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <!-- Jinja :: Plot Heatmap -->
+                                    {{ plot_heatmap | safe }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dataset Info -->
+                    <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-3 g-base">
+
+                        <!-- Jinja :: Widgets -->
+                        {{ widget('w-train', 'Training Set', 'light', 'bi-database', model_metadata.metrics.regression.train.size) }}
+                        {{ widget('w-test', 'Test Set', 'light', 'bi-flask', model_metadata.metrics.regression.test.size) }}
+                        {{ widget('w-features', 'Columns', 'light', 'bi-columns-gap', model_metadata.config.training.df_columns) }}
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<!-- Jinja :: Info -->
+{{ info(
+    'info-mae',
+    'Mean Absolute Error (MAE)', 'Performance indicator for regression models',
+    ['...'],
+    'bi-activity', 'secondary'
+) }}
+{{ info(
+    'info-rmse',
+    'Root Mean Square Error (RMSE)', 'Performance indicator for regression models',
+    ['...'],
+    'bi-speedometer', 'warning'
+) }}
+{{ info(
+    'info-r2',
+    'R<sup>2</sup>', 'Performance indicator for regression models',
+    ['...'],
+    'bi-graph-up', 'success'
+) }}
+{{ info(
+    'info-eui-dist',
+    'EUI Distribution', 'Target variable shape and spread',
+    ['...'],
+    'bi-info-circle', 'light'
+) }}
+{{ info(
+    'info-corr',
+    'Correlations', 'Heatmap of numerical dataset relationships',
+    ['...'],
+    'bi-info-circle', 'light'
+) }}
+{% endblock %}
+
+<!-- Jinja :: Scripts -->
+{% block scripts %}
+<script src="{{ url_for('static', path='js/pages/model_performance.js') }}"></script>
+{% endblock %}

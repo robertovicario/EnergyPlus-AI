@@ -234,8 +234,8 @@ printer() {
             COLOR="$RED"
             ;;
         *)
-            ICON=""
-            COLOR="$RESET"
+            ICON="ICON_ERR"
+            COLOR="$RED"
             ;;
     esac
     echo ""

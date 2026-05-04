@@ -45,12 +45,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap">
 
-    <!-- Stylesheets -->
+    <!-- Components -->
     <link rel="stylesheet" href="{{ request.url_for('static', path='css/root.css') }}">
     <link rel="stylesheet" href="{{ request.url_for('static', path='css/bs-theme-overrides.css') }}">
-    <link rel="stylesheet" href="{{ request.url_for('static', path='css/components/flash.css') }}">
-    <link rel="stylesheet" href="{{ request.url_for('static', path='css/components/table.css') }}">
     <link rel="stylesheet" href="{{ request.url_for('static', path='css/components/spinner_page.css') }}">
+
+    <!-- Jinja :: Styles -->
+    {% block styles %}{% endblock %}
 </head>
 
 <!-- ------------------------------------------------------------------------------------------ -->
@@ -59,15 +60,26 @@
 
 <body>
 
+    <!-- Jinja :: Spinner Page -->
+    {% include 'components/spinner-page.html' %}
+
     <!-- Main -->
     <div data-x-type="layout">
 
         <!-- Jinja :: Navbar -->
-        {% include 'components/navbar.html' %}
+        {% include 'includes/navbar.html' %}
 
         <!-- Jinja :: Content -->
         {% block content %}{% endblock %}
     </div>
+
+    <!-- ------------------------------------------------------------------------------------------ -->
+    <!-- SCRIPTS -->
+    <!-- ------------------------------------------------------------------------------------------ -->
+
+    <!-- Components -->
+    <script src="{{ request.url_for('static', path='js/components/spinner_page.js') }}"></script>
+    <script src="{{ request.url_for('static', path='js/components/theme_mode.js') }}"></script>
 
     <!-- Jinja :: Scripts -->
     {% block scripts %}{% endblock %}

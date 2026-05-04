@@ -18,16 +18,8 @@ from config.logger import logger, log_request
 # Configurations
 # =========================
 
-# Paths
-DATA_PATH = os.path.join(os.path.dirname(__file__), '..', 'data')
-
 # FastAPI
 router = APIRouter(prefix='/analytics', tags=['analytics'])
-
-# EnergyPlus API
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-IDD_PATH = os.path.abspath(os.path.join(DATA_PATH, 'config'))
-IDD_FILE = os.path.join(IDD_PATH, 'Energy+.idd')
 
 # Progress Tracking
 PROGRESS = {}
@@ -60,7 +52,11 @@ async def upload(
             if file.filename == '-1':
 
                 # ZIP
-                template_path = os.path.join(DATA_PATH, 'templates', 'template-1.zip')
+                template_path = os.path.join(
+                    request.app.state.DATA_PATH,
+                    'templates',
+                    'template-1.zip'
+                )
                 zip_path = os.path.join(tmpdir, 'template-1.zip')
 
                 with open(template_path, 'rb') as src, open(zip_path, 'wb') as dst:
@@ -95,6 +91,13 @@ async def upload(
                     content={'error': 'IDF or EPW file not found in the uploaded ZIP.'}
                 )
 
+            IDD_FILE = os.path.abspath(
+                os.path.join(
+                    request.app.state.DATA_PATH,
+                    'config',
+                    'Energy+.idd'
+                )
+            )
             IDF.setiddname(IDD_FILE)
             idf = IDF(idf_path, epw_path)
             PROGRESS[job_id] = 60

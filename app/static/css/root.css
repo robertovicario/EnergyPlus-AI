@@ -2,13 +2,9 @@
 /* Root */
 /* ========================= */
 
-/* :root {
-	--primary: #4daa57;
-} */
+::selection {
+	color: var(--x-primary);
+	background-color: var(--x-primary-bg-subtle);
+}
 
-/* ::selection {
-	color: var(--bs-primary);
-	background-color: var(--bs-primary-bg-subtle);
-} */
-
-/* ========================= */
+/* ------------------------- */

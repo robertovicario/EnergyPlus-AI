@@ -101,7 +101,7 @@ def get_rendering(idf: IDF) -> str:
 
     # -------------------------
 
-    # Rendering
+    # Figure
     fig = go.Figure()
     surfaces = idf.idfobjects['BUILDINGSURFACE:DETAILED']
     windows = idf.idfobjects['FENESTRATIONSURFACE:DETAILED']

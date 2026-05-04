@@ -1,0 +1,55 @@
+{
+    "id": "55u5113d0zv6",
+    "timestamp": "04 May 2026, 02:47:04",
+    "config": {
+        "info": {
+            "name": "Energy Model",
+            "version": "v1",
+            "task": "Regression",
+            "dataset": "udse.parquet",
+            "target": "EUI"
+        },
+        "training": {
+            "df_rows": 255036,
+            "df_columns": 23,
+            "frac": 1.0,
+            "test_size": 0.2,
+            "n_jobs": -1,
+            "random_state": 42,
+            "shuffle": true
+        }
+    },
+    "hyperparameters": {
+        "l2_regularization": 8.485420586212651,
+        "learning_rate": 0.047006594771349115,
+        "max_iter": 301,
+        "max_leaf_nodes": 25,
+        "min_samples_leaf": 52
+    },
+    "metrics": {
+        "descriptive": {
+            "count": 255036,
+            "mean": 132.21159666987572,
+            "std": 162.20323209999253,
+            "min": 18.086152249800797,
+            "q1": 45.61359819431989,
+            "median": 72.96202375313231,
+            "q3": 100.84124591631013,
+            "max": 1070.27202568227
+        },
+        "regression": {
+            "train": {
+                "size": 204028,
+                "mae": 14.329711580923712,
+                "rmse": 35.7930941837863,
+                "r2": 0.951454022507507
+            },
+            "test": {
+                "size": 51008,
+                "mae": 14.16644396506598,
+                "rmse": 35.202107594142355,
+                "r2": 0.9523154911222028
+            }
+        }
+    }
+}

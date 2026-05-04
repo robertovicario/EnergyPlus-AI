@@ -2,7 +2,7 @@
 {% extends 'base-2.html' %}
 
 <!-- Jinja :: Theme -->
-{% set theme_title = 'Home' %}
+{% set theme_title = 'Analytics' %}
 
 <!-- Jinja :: Macros -->
 {% from 'components/breadcrumb.html' import breadcrumb %}
@@ -15,7 +15,8 @@
         <!-- Jinja :: Breadcrumb -->
         {% set items = [
             { 'label': 'Menu', 'url': '#' },
-            { 'label': 'Home', 'url': '#' }
+            { 'label': 'Analytics', 'url': '#' },
+            { 'label': 'Templates', 'url': '#' }
         ] %}
         {{ breadcrumb(items) }}
 
@@ -49,14 +50,14 @@
                                         </div>
                                         <div>
                                             <h5 class="h4 mb-2">Energy Simulation</h5>
-                                            <p>Run detailed simulations to estimate energy consumption under real conditions.</p>
+                                            <p>Run detailed simulations to estimate energy consumption, loads, and system performance under real conditions.</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Artificial Intelligence -->
+                        <!-- Machine Learning -->
                         <div class="col-lg-5">
                             <div class="card bg-body-secondary border-0 shadow-none">
                                 <div class="card-body px-6 py-8">
@@ -65,8 +66,8 @@
                                             <i class="bi bi-robot"></i>
                                         </div>
                                         <div>
-                                            <h5 class="h4 mb-2">Artificial Intelligence</h5>
-                                            <p>Transform complex simulation outputs into actionable insights using advanced AI models.</p>
+                                            <h5 class="h4 mb-2">Machine Learning</h5>
+                                            <p>Transform complex simulation outputs into actionable insights using advanced machine learning models.</p>
                                         </div>
                                     </div>
                                 </div>

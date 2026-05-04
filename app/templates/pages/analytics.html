@@ -6,8 +6,8 @@
 
 <!-- Jinja :: Macros -->
 {% from 'components/breadcrumb.html' import breadcrumb %}
-{% from 'includes/analytics/widget.html' import widget %}
-{% from 'includes/analytics/table.html' import table %}
+{% from 'components/widget.html' import widget %}
+{% from 'components/table.html' import table %}
 
 <!-- Jinja :: Content -->
 {% block content %}
@@ -15,17 +15,12 @@
     <div class="flex-fill overflow-y-lg-auto mt-lg-2 scrollbar bg-body rounded-top-start border-top-lg border-start-lg shadow-lg-2" data-x-inject="page">
 
         <!-- Jinja :: Breadcrumb -->
-        {% set breadcrumb_items = [
-            {
-                'label': config.system.name,
-                'url': request.url_for('templates:home')
-            },
-            {
-                'label': 'Analytics',
-                'url': '#'
-            }
+        {% set items = [
+            { 'label': 'Menu', 'url': '#' },
+            { 'label': 'Analytics', 'url': '#' },
+            { 'label': 'Dashboard', 'url': '#' }
         ] %}
-        {{ breadcrumb(breadcrumb_items) }}
+        {{ breadcrumb(items) }}
 
         <!-- Page -->
         <div data-x-inject="page">
@@ -64,7 +59,7 @@
                                                 <div class="text-center mt-3">
                                                     <p class="fw-semibold">Upload an archive or drag and drop</p>
                                                 </div>
-                                                <p class="text-sm text-body-secondary">The archive must be a ZIP file containing both an IDF file and an EPW file.</p>
+                                                <p class="text-sm text-body-secondary">The archive must be a ZIP file containing both an IDF file and an EPW file</p>
                                             </div>
                                         </div>
                                     </div>
@@ -100,7 +95,7 @@
                                     {{ widget('w-windows', 'Windows', 'primary', 'bi-border-outer', 0) }}
                                     {{ widget('w-doors', 'Doors', 'primary', 'bi-door-open', 0) }}
                                 </div>
-                                <div class="row">
+                                <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-1 g-base">
                                     <div class="col">
                                         <div class="d-flex gap-4 flex-column">
                                             <div class="d-flex gap-4">
@@ -110,7 +105,7 @@
                                                             <div class="d-flex gap-1 align-items-center">
                                                                 <div>
                                                                     <h5>Rendering</h5>
-                                                                    <p class="text-body-secondary text-sm ">An approximate representation of the building retrieved by the AI model</p>
+                                                                    <p class="text-body-secondary text-sm">An approximate representation of the building retrieved by the AI model</p>
                                                                 </div>
                                                             </div>
                                                             <div class="ms-4">
@@ -136,11 +131,134 @@
                             <div class="d-flex flex-column gap-4">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="d-flex gap-4 flex-column">
-                                            <div class="d-flex gap-4">
+                                        <div class="d-flex flex-column gap-4">
 
-                                                <!-- Jinja :: Table -->
-                                                {{ table('table-energy-simulation') }}
+                                            <!-- Widgets -->
+                                            <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-base">
+
+                                                <!-- Jinja :: Widget -->
+                                                {{ widget('w-none', '...', 'primary', 'bi-bullseye', 0) }}
+                                                {{ widget('w-none', '...', 'success', 'bi-bullseye', 0) }}
+                                                {{ widget('w-none', '...', 'warning', 'bi-bullseye', 0) }}
+                                                {{ widget('w-none', '...', 'danger', 'bi-bullseye', 0) }}
+                                            </div>
+                                            <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-2 g-base">
+
+                                                <!-- Feature Importance -->
+                                                <div class="col">
+                                                    <div class="card h-100">
+                                                        <div class="card-header">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div class="d-flex gap-1 align-items-center">
+                                                                    <div>
+                                                                        <h5>Feature Importance</h5>
+                                                                        <p class="text-body-secondary text-sm">Shows which elements have the most impact on the results</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="ms-4">
+                                                                    <a class="text-muted" href="#">
+                                                                        <i class="bi bi-info-circle"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div id="shap-importance"></div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <div class="d-flex flex-column align-items-center text-sm">
+                                                                <div class="d-flex align-items-center gap-2 fw-semibold text-heading">
+                                                                    Trending up by 2.3%
+                                                                    <i class="bi bi-graph-up-arrow"></i>
+                                                                </div>
+                                                                <div class="text-xs text-body-secondary">Showing total visitors for the last 6 months</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Explainability -->
+                                                <div class="col">
+                                                    <div class="card h-100">
+                                                        <div class="card-header">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div class="d-flex gap-1 align-items-center">
+                                                                    <div>
+                                                                        <h5>Explainability</h5>
+                                                                        <p class="text-body-secondary text-sm">Explains why the AI model produced these results</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="ms-4">
+                                                                    <a class="text-muted" href="#">
+                                                                        <i class="bi bi-info-circle"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div id="shap-waterfall"></div>
+                                                        </div>
+                                                        <div class="card-footer py-0">
+                                                            <div class="list-group list-group-flush">
+                                                                <div class="list-group-item d-flex align-items-center justify-content-between bg-transparent text-sm">
+                                                                    <div class="d-flex gap-2 align-items-center w-50">
+                                                                        <span class="flex-none d-inline-block w-rem-4 h-rem-4 bg-primary rounded-1"></span>
+                                                                        <span class="fw-semibold">...</span>
+                                                                    </div>
+                                                                    <span>...</span>
+                                                                    <span>...</span>
+                                                                    <span>...</span>
+                                                                </div>
+                                                                <div class="list-group-item d-flex align-items-center justify-content-between bg-transparent text-sm">
+                                                                    <div class="d-flex gap-2 align-items-center w-50">
+                                                                        <span class="flex-none d-inline-block w-rem-4 h-rem-4 bg-danger rounded-1"></span>
+                                                                        <span class="fw-semibold">...</span>
+                                                                    </div>
+                                                                    <span>...</span>
+                                                                    <span>...</span>
+                                                                    <span>...</span>
+                                                                </div>
+                                                                <div class="list-group-item d-flex align-items-center justify-content-between bg-transparent text-sm">
+                                                                    <div class="d-flex gap-2 align-items-center w-50">
+                                                                        <span class="flex-none d-inline-block w-rem-4 h-rem-4 bg-primary rounded-1"></span>
+                                                                        <span class="fw-semibold">...</span>
+                                                                    </div>
+                                                                    <span>...</span>
+                                                                    <span>...</span>
+                                                                    <span>...</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Similar Cases -->
+                                            <div class="row row-cols-1 row-cols-sm-1 row-cols-xl-1 g-base">
+                                                <div class="col">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div class="d-flex gap-1 align-items-center">
+                                                                    <div>
+                                                                        <h5>Similar Cases</h5>
+                                                                        <p class="text-body-secondary text-sm">...</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="ms-4">
+                                                                    <a class="text-muted" href="#">
+                                                                        <i class="bi bi-info-circle"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+
+                                                            <!-- Jinja :: Table -->
+                                                            {{ table('table-similar-cases') }}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
